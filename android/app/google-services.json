@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "460997966297",
+    "project_id": "now-offering-app",
+    "storage_bucket": "now-offering-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:460997966297:android:92d282e82f99fa631981c8",
+        "android_client_info": {
+          "package_name": "com.apps.now"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "460997966297-i5dspbk5kb10bo5s4bgvvti7bqiivicn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkuk9lIwfCw_17GmKOEKLkay3r-OaVrTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "460997966297-i5dspbk5kb10bo5s4bgvvti7bqiivicn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "460997966297-cs1mdmvi1rr3gn722ujnabpmh7jft7sq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.apps.now"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

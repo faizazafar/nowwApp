@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Now</string>
+    <string name="apiKey_google">AIzaSyBMwjjCkm9ak-fcJj_bTH5UIPmU4A5Q0EE</string>
+	<string name="facebook_app_id">324400712492904</string>
+</resources>

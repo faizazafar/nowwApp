@@ -1,0 +1,31 @@
+{
+  "@ImagesVideos":"Images & Videos",
+  "@UploadImages":" Please upload images & videos",
+  "@Required(Image)": "Required(Image)",
+  "@NEXT":"NEXT",
+  "@Whichonedoyoulike?":"Which one do you like ?",
+  "@Library": "Library",
+  "@Camera":"Camera",
+  "@Cancel":"Cancel",
+  "@BRANDNAME":"Brand Name",
+  "@Pleaseenterthebrandname":" Please enter the brand name",
+  "@Brandname(Required)":"Brand Name (Required)",
+  "@Productname(optional)":"Product Name (Optional)",
+  "@Pleaseentertheproductname":"Please enter the product name",
+  "@ProductName":"Product Name",
+  "@Offer/Deal":"Offer/Deal",
+  "@Pleaseentertheoffer/deal":"Please enter the offer/deal",
+  "@BuyXgetYfree":"Buy X get Y free",
+  "@Writeyourownoffer":"Write your own offer",
+  "@X%free":"X% free",
+  "@Promotion(optional)":"Promotion (optional)",
+  "@Searchforaaddress":"Search for aaddress",
+  "@URL(optional)":"URL(optional)",
+  "@@PleaseentertheURL":"Please enter the URL",
+  "Interest":"Please enter the URL",
+  "Other":"Other"
+
+
+
+}
+
