@@ -82,6 +82,8 @@ export default class LocationMarker extends React.Component {
       center:  newCoordinate,
       radius:  Number(radius),
     };
+{console.log(latlng?.lat)}
+{console.log(latlng?.lng)}
 
     return (
       <View style={styles.container}>

@@ -26,6 +26,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setLoading, setAudience} from '../../redux/actions';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
+import { ScrollView } from 'react-native-gesture-handler';
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const BOX_SIZE = (DEVICE_WIDTH * 90) / 100 / 4 - 6;
 
@@ -140,6 +141,7 @@ export default function Interests(props) {
   };
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       <Header back logo border transparent audience />
       <StepsBar currentStep={3} style={styles.bar} />
@@ -190,6 +192,7 @@ export default function Interests(props) {
         />
       </View>
     </View>
+    </ScrollView>
   );
 }
 

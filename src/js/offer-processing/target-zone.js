@@ -50,46 +50,37 @@ export default function TargetZone(props) {
   const curr_location = useSelector(state => state.curr_location);
   const {offer} = props.route.params;
 
-  useEffect(() => {
-    Geolocation.getCurrentPosition(
-      position => {
-        const crd = position.coords;
-        // console.log("loc", crd)
-        setLocation({
-          ...location ,
-          latitude: crd.latitude,
-          longitude: crd.longitude,
-          latitudeDelta: 0.0421,
-          longitudeDelta: 0.0421,
-        });
-      },
-      error => {
-        console.log("error",error.code, error.message);
-      },
-      {enableHighAccuracy: true, timeout: 20000},
-    );
-  }, [location.latitude]);
+    console.log("target zone",curr_location)
+  // useEffect(() => {
+  //   Geolocation.getCurrentPosition(
+  //     position => {
+  //       const crd = position.coords;
+  //       console.log("loc", crd)
+  //       setLocation({
+  //         ...location ,
+  //         latitude: crd.latitude,
+  //         longitude: crd.longitude,
+  //         latitudeDelta: 0.0421,
+  //         longitudeDelta: 0.0421,
+  //       });
+  //     },
+  //     error => {
+  //       console.log("error",error.code, error.message);
+  //     },
+  //     {enableHighAccuracy: true, timeout: 20000},
+  //   );
+  // }, [location.latitude]);
 
   const onAddressSelect = address => {
     if (address) {
       onAddressStrChange(address.description);
-      this?.map?.updateMarkerLocation(address.location);
-      // console.log("adress",address);
-      setLocation({
-        ...location ,
-        latitude: address.location.lat,
-        longitude: address.location.lng,
-        latitudeDelta: 0.0421,
-        longitudeDelta: 0.0421,
-      });
+      this.map.updateMarkerLocation(address.location);
     } else {
       onAddressStrChange('');
     }
   };
   
-  console.log("lat",location.latitude)
-  console.log("lng",location.longitude)
-  // console.log(radius);
+  console.log(radius);
 
   const onNext = () => {
     let processOffer = {
@@ -200,18 +191,18 @@ export default function TargetZone(props) {
 
         <View style={styles.mapView}>
         
-            {/* <LocationMarker
+            <LocationMarker
 
             ref={ref => {
               this.map = ref;
             }}
-            latlng={{lat: location?.latitude  , lng: location?.longitude }}
-            onRegionChange={location}
-            updateMarkerLocation={{lat: location?.latitude  , lng: location?.longitude }}
+            latlng={{lat: curr_location?.lat  , lng: curr_location?.lng }}
+            // onRegionChange={location}
+            // updateMarkerLocation={{lat: location?.latitude  , lng: location?.longitude }}
             pointerSrc={require('../../assets/google-maps.png')}
             radius={getRadiusInMeters()}
-          /> */}
-          <MapView style={{flex:1}} region={location}  initialRegion={location}
+          />
+          {/* <MapView style={{flex:1}} region={location}  initialRegion={location}
 >
 
           <Marker style={{width:20,height:20}}  coordinate={{latitude:location?.latitude?0:43,longitude:location?.longitude?0:67}}>
@@ -225,26 +216,15 @@ export default function TargetZone(props) {
               zIndex={2}
               strokeWidth={2}
             />)}
-          </MapView>
+          </MapView> */}
          
          
           <View style={styles.autoInputContainer}>
             <ZRAddressAutoInput
               style={styles.textInput}
               onSelect={address => {
-                // onAddressSelect(address);
-                onAddressStrChange(address?.description);
-                this?.map?.updateMarkerLocation(address.location);
-                // console.log("adress",address);
-                // console.log("adress",address);
-                // setLocation({
-                //   ...location ,
-                //   latitude: address?.location?.lat,
-                //   longitude: address?.location?.lng,
-                //   latitudeDelta: 0.0421,
-                //   longitudeDelta: 0.0421,
-                // });
-
+                console.log(address)
+                onAddressSelect(address);
               }}
               onChangeText={address => {
                 onAddressStrChange(address);

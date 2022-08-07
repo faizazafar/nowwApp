@@ -8,7 +8,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  KeyboardAvoidingView, Platform, Keyboard
+  KeyboardAvoidingView, Platform
 } from 'react-native';
 
 import {
@@ -21,8 +21,6 @@ import ZRInput from './zr-input';
 import Colors from '../../settings/colors';
 import Service from '../../libs/api/service';
 
-
-const newvalue=[{name:'alasd'},{name:'alasd'},{name:'alasd'},{name:'alasd'},]
 export default class ZRAddressAutoInput extends ZRInput {
   constructor() {
     super();
@@ -63,20 +61,22 @@ export default class ZRAddressAutoInput extends ZRInput {
       item.place_id +
       '&language=en' +
       '&key=AIzaSyBMwjjCkm9ak-fcJj_bTH5UIPmU4A5Q0EE';
-      
+
     let service = new Service();
     let googleResponse = await service.callGetFromUrl(url);
-      // console.log("STATUS",googleResponse)
+
     if (googleResponse.status == 'OK') {
       let obj = {
         location: googleResponse.result.geometry.location,
         description: item.description,
       };
+
       this.props.onSelect(obj);
     }
   }
 
   async onItemPress(item) {
+    console.log(item)
     this.setState({data: []});
     this.getDetails(item);
   }
@@ -89,20 +89,15 @@ export default class ZRAddressAutoInput extends ZRInput {
 
   _item({item, index}) {
     return (
-      <View
-      // behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex:1}}
-      // keyboardVerticalOffset={Platform.OS === 'ios' ? 70 : 120}
-  >
+  
       <TouchableOpacity
         onPress={() => {
+          console.log(item)
           this.onItemPress(item);
-          console.log('press');
         }}
         style={styles.item}>
         <Text style={styles.itemStr}>{item.description}</Text>
       </TouchableOpacity>
-      </View>
 
     );
   }
@@ -130,7 +125,7 @@ export default class ZRAddressAutoInput extends ZRInput {
             }}
             onChange={() => {
               this.onValueChange();
-              // this.props.onSelect(null); //reset screen
+              this.props.onSelect(null); //reset screen
             }}
             onFocus={() => {
               this.onChangeText(this.props.value);
@@ -142,18 +137,15 @@ export default class ZRAddressAutoInput extends ZRInput {
               this.onChangeText(txt);
             }}
             onSubmitEditing={() => {
-              // this.props.onSelect()
               this.setState({data: []});
             }}
             returnKeyType="done"
-            
             style={[
               this.props.style,
-              {width: '100%', borderColor,backgroundColor:'green', paddingRight: wp(40)},
+              {width: '100%', borderColor, paddingRight: wp(40)},
             ]}
-
           />
-          {this.props.value.trim() != '' &&(
+          {this.props.value.trim() != '' && (
             <TouchableOpacity
               onPress={() => {
                 this.onCrossPress();
@@ -167,47 +159,15 @@ export default class ZRAddressAutoInput extends ZRInput {
           )}
         </View>
         {isAlert && <Text style={styles.alertStr}>{alertMsg}</Text>}
+        <View style={{}}>
           <FlatList
-keyboardShouldPersistTaps='handled'
-style={{backgroundColor:'yellow',flex:1}}
-            // contentContainerStyle={{paddingBottom: hp(0)}}
+            contentContainerStyle={{paddingBottom: hp(0)}}
             showsVerticalScrollIndicator={false}
             data={data}
-            renderItem={(item)=>{
-            //  console.log("FLATLIST",item.item);
-             console.log(this.props.value);
-              return(
-        
-              <TouchableOpacity
-                onPress={async() => {
-                  Keyboard.dismiss()
-                  this.setState({data: []});
-
-                  let url =
-                  'https://maps.googleapis.com/maps/api/place/details/json?&placeid=' +
-                  item.item.place_id +
-                  '&language=en' +
-                  '&key=AIzaSyBMwjjCkm9ak-fcJj_bTH5UIPmU4A5Q0EE';
-                  
-                let service = new Service();
-                let googleResponse = await service.callGetFromUrl(url);
-                  // console.log("STATUS",googleResponse)
-                if (googleResponse.status == 'OK') {
-                  let obj = {
-                    location: googleResponse.result.geometry.location,
-                    description: item.item.description,
-                  };
-                  this.props.onSelect(obj);
-                }
-                              // console.log('press',item?.item);
-                }}
-                style={styles.item}>
-                <Text style={styles.itemStr}>{item?.item?.description}</Text>
-              </TouchableOpacity>
-              )
-            }}
+            renderItem={this._item.bind(this)}
             keyExtractor={(item, index) => index.toString()}
           />
+        </View>
       </View>
     );
   }
@@ -235,7 +195,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: Colors.BORDER,
     backgroundColor: Colors.THEME,
-    overflow:"hidden"
+    overflow:"hidden",
+    elevation:0.20,
+    zIndex:1
     
   },
   crossIconContainer: {
@@ -259,5 +221,3 @@ const styles = StyleSheet.create({
     marginLeft: wp(20),
   },
 });
-////
-

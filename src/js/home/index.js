@@ -35,6 +35,7 @@ export default function Home() {
   const [offers, setOffers] = useState([]);
   const user = useSelector(state => state.user);
   const curr_location = useSelector(state => state.curr_location);
+console.log("current",curr_location)
 
   const loadData = async () => {
     dispatch(setLoading(true));

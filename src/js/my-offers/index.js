@@ -65,6 +65,7 @@ export default function MyOffers({navigation}) {
   };
 
   const getData = async () => {
+    console.log(user.id)
     dispatch(setLoading(true));
     let s = new Service();
     let response = await s.getUserOffers(user.id);

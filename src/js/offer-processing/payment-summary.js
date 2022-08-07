@@ -54,6 +54,7 @@ export default function PaymentSumary(props) {
     if (response.status) {
       setPaymentMethods(response.data.paymentModes);
     } else {
+      console.log(response.message)
       Alert.alert(response.message);
     }
   };
@@ -75,7 +76,8 @@ export default function PaymentSumary(props) {
         processOffer.couponType = coupenResponse.data.type;
         processOffer.couponDiscount = coupenResponse.data.discount;
       } else {
-        Alert.alert(coupenResponse.message);
+        console.log(coupenResponse.message)
+        // Alert.alert(coupenResponse.message);
         return;
       }
     } else {
@@ -134,6 +136,7 @@ export default function PaymentSumary(props) {
     if (response.status) {
       navigation.navigate('Published');
     } else {
+      console.log(response.message)
       Alert.alert(response.message);
     }
   };
@@ -237,6 +240,7 @@ export default function PaymentSumary(props) {
         ref={ref => {
           this.paypal = ref;
         }}
+
         key={Math.random()}
         navigation={navigation}
         amount={10}
