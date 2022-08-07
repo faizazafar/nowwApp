@@ -1,29 +1,29 @@
-import * as React from 'react';
+import * as React from "react";
 
-import {StyleSheet, Text, View, TextInput, Dimensions} from 'react-native';
+import { StyleSheet, Text, View, TextInput, Dimensions } from "react-native";
 
 import {
   responsiveWidth as wp,
   responsiveHeight as hp,
   responsiveFontSize as fs,
-} from '../libs/responsive';
+} from "../libs/responsive";
 
-import Colors from '../settings/colors';
-import {useNavigation} from '@react-navigation/native';
-import Header from '../common/components/header';
-import MediaButton from '../common/components/media-button';
-import LocationMarker from '../libs/maps/location-marker';
-import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import StepsBar from '../post/components/steps-bar';
-import ZRAddressAutoInput from '../common/form/zr-address-auto-input';
-import SelectiveButton from '../common/components/selective-button';
-import {useSelector} from 'react-redux';
-import { t } from 'i18next';
-import i18n from 'i18next';
-import {PermissionsAndroid, Platform, Alert} from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
-import { useEffect , useState } from 'react';
-import MapView, { Circle, Marker } from 'react-native-maps';
+import Colors from "../settings/colors";
+import { useNavigation } from "@react-navigation/native";
+import Header from "../common/components/header";
+import MediaButton from "../common/components/media-button";
+import LocationMarker from "../libs/maps/location-marker";
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
+import StepsBar from "../post/components/steps-bar";
+import ZRAddressAutoInput from "../common/form/zr-address-auto-input";
+import SelectiveButton from "../common/components/selective-button";
+import { useSelector } from "react-redux";
+import { t } from "i18next";
+import i18n from "i18next";
+import { PermissionsAndroid, Platform, Alert } from "react-native";
+import Geolocation from "react-native-geolocation-service";
+import { useEffect, useState } from "react";
+import MapView, { Circle, Marker } from "react-native-maps";
 
 const options = {
   enableHighAccuracy: false,
@@ -31,7 +31,7 @@ const options = {
   maximumAge: 3600000, //1 hour = 3600000 ms
   distanceFilter: 1609, //1 mile  = 1609 meters
 };
-const DEVICE_WIDTH = Dimensions.get('window').width;
+const DEVICE_WIDTH = Dimensions.get("window").width;
 const SLIDER_WIDTH = (DEVICE_WIDTH * 50) / 100;
 const GENDER_BTN_WIDTH = ((DEVICE_WIDTH * 90) / 100 - wp(30)) / 4;
 
@@ -44,13 +44,13 @@ export default function TargetZone(props) {
   });
   const navigation = useNavigation();
   const [radius, setRadius] = React.useState([0]);
-  const [unit, setUnit] = React.useState('m');
-  const [addressStr, onAddressStrChange] = React.useState('');
-  const user = useSelector(state => state.user);
-  const curr_location = useSelector(state => state.curr_location);
-  const {offer} = props.route.params;
+  const [unit, setUnit] = React.useState("m");
+  const [addressStr, onAddressStrChange] = React.useState("");
+  const user = useSelector((state) => state.user);
+  const curr_location = useSelector((state) => state.curr_location);
+  const { offer } = props.route.params;
 
-    console.log("target zone",curr_location)
+  console.log("target zone", curr_location);
   // useEffect(() => {
   //   Geolocation.getCurrentPosition(
   //     position => {
@@ -71,15 +71,15 @@ export default function TargetZone(props) {
   //   );
   // }, [location.latitude]);
 
-  const onAddressSelect = address => {
+  const onAddressSelect = (address) => {
     if (address) {
       onAddressStrChange(address.description);
       this.map.updateMarkerLocation(address.location);
     } else {
-      onAddressStrChange('');
+      onAddressStrChange("");
     }
   };
-  
+
   console.log(radius);
 
   const onNext = () => {
@@ -91,21 +91,21 @@ export default function TargetZone(props) {
       targetRadius: radius[0],
       targetRadiusUnit: unit,
     };
-    navigation.navigate('AgeGender', {processOffer});
+    navigation.navigate("AgeGender", { processOffer });
   };
 
   const getRadiusInMeters = () => {
     let value = radius[0];
 
-    if (unit != 'm') {
+    if (unit != "m") {
       switch (unit) {
-        case 'km':
+        case "km":
           value = value * 1000;
           break;
-        case 'yard':
+        case "yard":
           value = value / 1.094;
           break;
-        case 'mile':
+        case "mile":
           value = value * 1609;
           break;
         default:
@@ -118,22 +118,22 @@ export default function TargetZone(props) {
   };
 
   const convertUnit = (to, value) => {
-    if (to == 'km') {
+    if (to == "km") {
       value = value / 1000;
-    } else if (to == 'yard') {
+    } else if (to == "yard") {
       value = value * 1.094;
-    } else if (to == 'mile') {
+    } else if (to == "mile") {
       value = value / 1609;
     }
 
-    console.log('test82 cv: ', value);
+    console.log("test82 cv: ", value);
 
     setUnit(to);
     setRadius([parseFloat(value).toFixed(1)]);
   };
 
-  const onChangeText = txt => {
-    if (txt.trim() == '') {
+  const onChangeText = (txt) => {
+    if (txt.trim() == "") {
       setRadius([0]);
     } else {
       setRadius([parseFloat(txt)]);
@@ -144,35 +144,47 @@ export default function TargetZone(props) {
     return (
       <View style={styles.checksRow}>
         <SelectiveButton
-          style={{width: GENDER_BTN_WIDTH, height: hp(30)}}
+          style={{ width: GENDER_BTN_WIDTH, height: hp(30) }}
           title={t("@Meters")}
-          selected={unit == 'm'}
+          selected={unit == "m"}
           onPress={() => {
-            convertUnit('m', getRadiusInMeters());
+            convertUnit("m", getRadiusInMeters());
           }}
         />
         <SelectiveButton
           title={t("@Kilometer")}
-          style={{width: GENDER_BTN_WIDTH, marginLeft: wp(10), height: hp(30)}}
-          selected={unit == 'km'}
+          style={{
+            width: GENDER_BTN_WIDTH,
+            marginLeft: wp(10),
+            height: hp(30),
+          }}
+          selected={unit == "km"}
           onPress={() => {
-            convertUnit('km', getRadiusInMeters());
+            convertUnit("km", getRadiusInMeters());
           }}
         />
         <SelectiveButton
           title={t("@Yards")}
-          style={{width: GENDER_BTN_WIDTH, marginLeft: wp(10), height: hp(30)}}
-          selected={unit == 'yard'}
+          style={{
+            width: GENDER_BTN_WIDTH,
+            marginLeft: wp(10),
+            height: hp(30),
+          }}
+          selected={unit == "yard"}
           onPress={() => {
-            convertUnit('yard', getRadiusInMeters());
+            convertUnit("yard", getRadiusInMeters());
           }}
         />
         <SelectiveButton
           title={t("@Miles")}
-          style={{width: GENDER_BTN_WIDTH, marginLeft: wp(10), height: hp(30)}}
-          selected={unit == 'mile'}
+          style={{
+            width: GENDER_BTN_WIDTH,
+            marginLeft: wp(10),
+            height: hp(30),
+          }}
+          selected={unit == "mile"}
           onPress={() => {
-            convertUnit('mile', getRadiusInMeters());
+            convertUnit("mile", getRadiusInMeters());
           }}
         />
       </View>
@@ -190,16 +202,14 @@ export default function TargetZone(props) {
         <Text style={styles.title}>{t("@Pleaseselectthetargetzone")}</Text>
 
         <View style={styles.mapView}>
-        
-            <LocationMarker
-
-            ref={ref => {
-              this.map = ref;
-            }}
-            latlng={{lat: curr_location?.lat  , lng: curr_location?.lng }}
+          <LocationMarker
+            // ref={(ref) => {
+            //   this.map = ref;
+            // }}
+            latlng={{ lat: curr_location?.lat, lng: curr_location?.lng }}
             // onRegionChange={location}
             // updateMarkerLocation={{lat: location?.latitude  , lng: location?.longitude }}
-            pointerSrc={require('../../assets/google-maps.png')}
+            pointerSrc={require("../../assets/google-maps.png")}
             radius={getRadiusInMeters()}
           />
           {/* <MapView style={{flex:1}} region={location}  initialRegion={location}
@@ -217,16 +227,15 @@ export default function TargetZone(props) {
               strokeWidth={2}
             />)}
           </MapView> */}
-         
-         
+
           <View style={styles.autoInputContainer}>
             <ZRAddressAutoInput
               style={styles.textInput}
-              onSelect={address => {
-                console.log(address)
+              onSelect={(address) => {
+                console.log(address);
                 onAddressSelect(address);
               }}
-              onChangeText={address => {
+              onChangeText={(address) => {
                 onAddressStrChange(address);
               }}
               placeholder={t("@Searchforaaddress")}
@@ -242,7 +251,7 @@ export default function TargetZone(props) {
 
           {mesurements()}
           <View style={styles.radiusView}>
-            <View style={{marginTop: hp(10)}}>
+            <View style={{ marginTop: hp(10) }}>
               <MultiSlider
                 values={radius}
                 sliderLength={SLIDER_WIDTH}
@@ -250,10 +259,10 @@ export default function TargetZone(props) {
                 min={0}
                 max={600}
                 selectedStyle={{
-                  backgroundColor: 'rgb(228, 45, 72)',
+                  backgroundColor: "rgb(228, 45, 72)",
                 }}
                 unselectedStyle={{
-                  backgroundColor: 'silver',
+                  backgroundColor: "silver",
                 }}
                 trackStyle={{
                   height: 4,
@@ -263,13 +272,13 @@ export default function TargetZone(props) {
 
             <TextInput
               style={styles.input}
-              onChangeText={txt => {
+              onChangeText={(txt) => {
                 onChangeText(txt);
               }}
               keyboardType="decimal-pad"
               value={radius[0].toString()}
               placeholder={t("@Radius")}
-              placeholderTextColor={'#ccc'}
+              placeholderTextColor={"#ccc"}
             />
           </View>
 
@@ -294,33 +303,33 @@ const styles = StyleSheet.create({
     marginTop: hp(10),
     color: Colors.WHITE,
     fontSize: fs(15),
-    fontFamily: 'Roboto-Regular',
+    fontFamily: "Roboto-Regular",
   },
   detailsTxt: {
     marginLeft: wp(10),
     color: Colors.WHITE,
     fontSize: fs(17),
     marginRight: wp(20),
-    fontFamily: 'Roboto-Medium',
+    fontFamily: "Roboto-Medium",
   },
   radiusView: {
-    width: '100%',
+    width: "100%",
     height: hp(30),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginTop: hp(0),
   },
   checkBox: {
-    flexDirection: 'row',
-    flexDirection: 'row-reverse',
-    alignSelf: 'flex-start',
-    alignItems: 'center',
+    flexDirection: "row",
+    flexDirection: "row-reverse",
+    alignSelf: "flex-start",
+    alignItems: "center",
     marginTop: hp(17),
   },
   checksRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: hp(10),
   },
   input: {
@@ -328,16 +337,16 @@ const styles = StyleSheet.create({
     marginTop: hp(10),
     height: hp(35),
     borderWidth: 1,
-    borderColor: '#fff',
-    color: '#fff',
+    borderColor: "#fff",
+    color: "#fff",
     borderRadius: 5,
     paddingLeft: wp(10),
     fontSize: fs(16),
     //marginLeft: '10%',
-    fontFamily: 'Roboto-Medium',
+    fontFamily: "Roboto-Medium",
   },
   button: {
-    backgroundColor: 'rgb(228, 45, 72)',
+    backgroundColor: "rgb(228, 45, 72)",
     marginTop: hp(20),
     marginBottom: hp(30),
   },
@@ -345,60 +354,60 @@ const styles = StyleSheet.create({
     marginLeft: wp(10),
     color: Colors.WHITE,
     fontSize: fs(13),
-    fontFamily: 'Roboto-Regular',
-    alignSelf: 'flex-end',
+    fontFamily: "Roboto-Regular",
+    alignSelf: "flex-end",
   },
   icon: {
     marginLeft: wp(10),
     width: hp(8),
     height: hp(8),
-    resizeMode: 'contain',
-    tintColor: 'rgb(228, 45, 72)',
+    resizeMode: "contain",
+    tintColor: "rgb(228, 45, 72)",
   },
   btnTxt: {
     color: Colors.WHITE,
-    fontFamily: 'Roboto-Medium',
+    fontFamily: "Roboto-Medium",
     fontSize: fs(14),
-    textAlign: 'center',
+    textAlign: "center",
   },
   addBtnTxt: {
-    color: 'rgb(228, 45, 72)',
-    fontFamily: 'Roboto-Medium',
+    color: "rgb(228, 45, 72)",
+    fontFamily: "Roboto-Medium",
     fontSize: fs(13),
-    textAlign: 'center',
+    textAlign: "center",
   },
   addBtn: {
     marginTop: hp(7),
     width: ((DEVICE_WIDTH * 90) / 100 - wp(20)) / 3,
     height: hp(26),
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: hp(2),
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   locationButton: {
     marginTop: hp(7),
     width: ((DEVICE_WIDTH * 90) / 100 - wp(20)) / 3,
     height: hp(26),
-    backgroundColor: '#4a89f3',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#4a89f3",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: hp(2),
   },
   buttonsView: {
     marginTop: hp(10),
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap",
   },
   autoInputContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: hp(-50),
-    width: '90%',
-    alignSelf: 'center',
+    width: "90%",
+    alignSelf: "center",
   },
   mapView: {
     marginTop: hp(60),
@@ -407,10 +416,10 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     paddingLeft: wp(15),
-    fontFamily: 'Roboto-Regular',
+    fontFamily: "Roboto-Regular",
     // fontSize: i18n.language == 'en' ? fs(16) : fs(20),
-    fontWeight: '500',
-    color: '#fff',
+    fontWeight: "500",
+    color: "#fff",
     height: hp(40),
   },
   // mapView: {
@@ -424,43 +433,43 @@ const styles = StyleSheet.create({
   },
   image: {
     marginTop: hp(20),
-    width: '100%',
+    width: "100%",
     height: hp(250),
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   bar: {
-    width: '100%',
-    alignSelf: 'center',
+    width: "100%",
+    alignSelf: "center",
     marginTop: 0,
     height: hp(10),
   },
   body: {
     flex: 1,
-    width: '100%',
-    alignSelf: 'center',
+    width: "100%",
+    alignSelf: "center",
   },
   lowerBody: {
-    width: '90%',
-    alignSelf: 'center',
+    width: "90%",
+    alignSelf: "center",
   },
   stepTxt: {
     color: Colors.WHITE,
     fontSize: fs(14),
-    fontFamily: 'Roboto-Regular',
+    fontFamily: "Roboto-Regular",
   },
   heading: {
-    marginLeft: '5%',
+    marginLeft: "5%",
     marginTop: hp(10),
     color: Colors.WHITE,
     fontSize: fs(26),
-    fontFamily: 'Roboto-Bold',
+    fontFamily: "Roboto-Bold",
   },
   title: {
-    marginLeft: '5%',
+    marginLeft: "5%",
     marginTop: hp(2),
     color: Colors.WHITE,
     fontSize: fs(14),
-    fontSize: i18n.language == 'en' ? fs(16) : fs(20),
-    fontFamily: 'Roboto-Regular',
+    fontSize: i18n.language == "en" ? fs(16) : fs(20),
+    fontFamily: "Roboto-Regular",
   },
 });

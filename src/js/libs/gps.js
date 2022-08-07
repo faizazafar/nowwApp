@@ -1,5 +1,7 @@
-import {PermissionsAndroid, Platform, Alert} from 'react-native';
-import Geolocation from 'react-native-geolocation-service';
+import { PermissionsAndroid, Platform, Alert } from "react-native";
+import Geolocation from "react-native-geolocation-service";
+import { connect } from "react-redux";
+import { setCurrentLocation } from "../../redux/actions";
 
 const options = {
   enableHighAccuracy: true,
@@ -13,17 +15,17 @@ export default class Gps {
     return await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       {
-        title: 'GPS Permission',
-        message: 'GPSAPP would like to access your location.',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
+        title: "GPS Permission",
+        message: "GPSAPP would like to access your location.",
+        buttonNeutral: "Ask Me Later",
+        buttonNegative: "Cancel",
+        buttonPositive: "OK",
+      }
     );
   }
 
   async checkPermission() {
-    if (Platform.OS == 'android') {
+    if (Platform.OS == "android") {
       const granted = await this.requestAndroidPermission();
       //console.log('test32 gps permission', granted);
 
@@ -35,17 +37,41 @@ export default class Gps {
         return false;
       }
     } else {
-      let level = await Geolocation.requestAuthorization('whenInUse');
-      return level == 'granted';
+      let level = await Geolocation.requestAuthorization("whenInUse");
+      return level == "granted";
     }
   }
+  updateLocationToServer = async (latitude, longitude) => {
+    dispatch(setLoading(true));
+    let deviceId = getUniqueId().replace(/-/g, "");
+
+    let payload = {
+      userId: user.id,
+      lat: latitude,
+      lng: longitude,
+      timestamp: dateformat(new Date(), "yyyy-mm-dd HH:MM:ss"),
+      deviceId: deviceId,
+    };
+
+    let s = new Service();
+    let response = await s.updateUserLocation(payload);
+    // console.log(
+    //   'test82 updateUserLocation:',
+    //   JSON.stringify(response),
+    //   JSON.stringify(payload),
+    // );
+
+    dispatch(setLoading(false));
+
+    if (!response.status) {
+      Alert.alert(response.message);
+    }
+  };
 
   async getCoordinates(onDone) {
     let isGranted = await this.checkPermission();
 
     let coordinates = {
-      // lat:  24.9305975,
-      // lng:  67.10056132,
       lat: 24.860977,
       lng: 67.067902,
     };
@@ -54,23 +80,30 @@ export default class Gps {
 
     if (isGranted) {
       Geolocation.getCurrentPosition(
-        position => {
+        (position) => {
           let coordinates = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          console.log(coordinates)
+          // console.log("COORDINATES", coordinates);
           onDone(false, coordinates);
+          // dispatch(setCurrentLocation(coordinates));
+          // this.updateLocationToServer(coordinates.lat, coordinates.lng);
+          // this.props.curr_location({
+          //   ...this.props.curr_location,
+          //   lat: position.coords.latitude,
+          //   lng: position.coords.longitude,
+          // });
         },
-        error => {
+        (error) => {
           onDone(true, error.message);
         },
-        options,
+        options
       );
     } else {
       onDone(
         true,
-        'Gps permission denied. If you have not given the permission, you can give the GPS permission to pill2me App from device settings.',
+        "Gps permission denied. If you have not given the permission, you can give the GPS permission to pill2me App from device settings."
       );
     }
   }
