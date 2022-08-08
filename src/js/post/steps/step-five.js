@@ -44,22 +44,23 @@ export default function StepFive(props) {
   const curr_location = useSelector(state => state.curr_location);
   const offer = useSelector(state => state.offer);
 
-  useEffect(() => {
-    Geolocation.getCurrentPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        console.log("loc",position.coords)
-        setLocation({
-          latitude,
-          longitude,
-        });
-      },
-      error => {
-        console.log("error",error.code, error.message);
-      },
-      {enableHighAccuracy: true, timeout: 20000},
-    );
-  }, []);
+console.log("step five current loc", curr_location)
+  // useEffect(() => {
+  //   Geolocation.getCurrentPosition(
+  //     position => {
+  //       const {latitude, longitude} = position.coords;
+  //       console.log("loc",position.coords)
+  //       setLocation({
+  //         latitude,
+  //         longitude,
+  //       });
+  //     },
+  //     error => {
+  //       console.log("error",error.code, error.message);
+  //     },
+  //     {enableHighAccuracy: true, timeout: 20000},
+  //   );
+  // }, []);
   // console.log(gps.getCoordinates(true))
   const mapView = useRef();
 
@@ -153,6 +154,7 @@ export default function StepFive(props) {
           lng: item.longitude,
         };
 
+        console.log("koct",locationItem)
         locationsToSend.push(locationItem);
       }
     });

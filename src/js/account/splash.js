@@ -20,12 +20,58 @@ import {useNavigation} from '@react-navigation/native';
 import Gradient from '../common/components/gradient';
 import {useDispatch} from 'react-redux';
 import {setUser} from '../../redux/actions';
+import Gps from "../libs/gps";
+import { setLoading,setCurrentLocation } from "../../redux/actions";
 
 export default function Splash() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
+  const getLocation = async () => {
+    console.log("dfadfafadfasad");
+    try {
+      let gps = new Gps();
+      gps.getCoordinates(async (isError, value) => {
+        console.log("val", value)
+        if (!isError == true) {
+          dispatch(setCurrentLocation(value));
+          await updateLocationToServer(value.lat, value.lng);
+        } else {
+          Alert.alert("Error in getting GPS location, " + value);
+        }
+      });
+    } catch (e) {}
+  };
+
+  const updateLocationToServer = async (latitude, longitude) => {
+    dispatch(setLoading(true));
+    let deviceId = getUniqueId().replace(/-/g, "");
+
+    let payload = {
+      userId: user.id,
+      lat: latitude,
+      lng: longitude,
+      timestamp: dateformat(new Date(), "yyyy-mm-dd HH:MM:ss"),
+      deviceId: deviceId,
+    };
+
+    let s = new Service();
+    let response = await s.updateUserLocation(payload);
+    // console.log(
+    //   'test82 updateUserLocation:',
+    //   JSON.stringify(response),
+    //   JSON.stringify(payload),
+    // );
+
+    dispatch(setLoading(false));
+
+    if (!response.status) {
+      Alert.alert("updateLocationToServer", response.message);
+    }
+  };
+
   useEffect(() => {
+    getLocation()
     LogBox.ignoreAllLogs();
     if (Platform.OS == 'android') {
       StatusBar.setBackgroundColor(Colors.THEME);

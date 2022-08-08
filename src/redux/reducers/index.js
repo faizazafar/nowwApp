@@ -25,11 +25,10 @@ const initialState = {
   deleteOffer: null,
   myOffers: [],
   audience: { all: 0, withInterest: 0, withoutInterest: 0 },
-  curr_location: { lat: 0, lng: 0 },
   // curr_location: {lat:
   //   24.9305975 , lng: 67.1005613},
-  // curr_location: {lat:
-  //   0 , lng: 0},
+  curr_location: {lat:
+    0 , lng: 0},
 };
 
 const rootReducer = (state = initialState, action) => {

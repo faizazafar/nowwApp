@@ -203,9 +203,9 @@ export default function TargetZone(props) {
 
         <View style={styles.mapView}>
           <LocationMarker
-            // ref={(ref) => {
-            //   this.map = ref;
-            // }}
+            ref={(ref) => {
+              this.map = ref;
+            }}
             latlng={{ lat: curr_location?.lat, lng: curr_location?.lng }}
             // onRegionChange={location}
             // updateMarkerLocation={{lat: location?.latitude  , lng: location?.longitude }}

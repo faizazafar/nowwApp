@@ -28,11 +28,13 @@ export default function Payment(props) {
   const [paymentMethods, setPaymentMethods] = useState([]);
   let {processOffer} = props.route.params;
 
+  // console.log(processOffer)
+
   useEffect(() => {
     getData();
   }, []);
 
-  getData = async () => {
+  const getData = async () => {
     dispatch(setLoading(true));
     let s = new Service();
     let response = await s.getPaymentModes();
@@ -45,7 +47,8 @@ export default function Payment(props) {
     }
   };
 
-  onNext = async () => {
+  const onNext = async () => {
+    console.log("xsjxsu")
     processOffer.paymentModeId = checkIndex;
 
     var payload = new FormData();
@@ -64,21 +67,21 @@ export default function Payment(props) {
     dispatch(setLoading(true));
     let s = new Service();
     let response = await s.scheduleOffer(payload);
-    // //console.log(
-    //   'test82 processOffer: ',
-    //   JSON.stringify(processOffer),
-    //   // JSON.stringify(response),
-    // );
+    console.log(
+      'test82 processOffer: ',
+      JSON.stringify(processOffer),
+      JSON.stringify(response),
+    );
     dispatch(setLoading(false));
     if (response.status) {
       dispatch(setOffer(initialOffer));
-      navigation.navigate('Published');
+      navigation.navigate('Home');
     } else {
       Alert.alert(response.message);
     }
   };
 
-  renderPaymentMethods = () => {
+  const renderPaymentMethods = () => {
     return paymentMethods.map((item, index) => {
       return (
         <ZRSwitch

@@ -28,6 +28,8 @@ export default function ScheduleOffer(props) {
   const [date, onDateChange] = React.useState(new Date());
   let {processOffer} = props.route.params;
 
+  console.log("pro cess offer",processOffer)
+
   const dateSelectorRef = useRef(null);
 
   const scheduleOffer = async date => {
@@ -61,6 +63,7 @@ export default function ScheduleOffer(props) {
   };
 
   onNext = () => {
+
     navigation.navigate('Summary', {processOffer});
   };
 

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState ,  useRef} from 'react';
 import {
   StyleSheet,
   View,
@@ -38,7 +38,7 @@ export default function PaymentSumary(props) {
   const [coupen, onCoupenChange] = useState('');
   const audienceData = useSelector(state => state.audience);
   const {t} = useTranslation();
-
+ const paypal = useRef()
   let {processOffer} = props.route.params;
 
   useEffect(() => {
@@ -108,7 +108,7 @@ export default function PaymentSumary(props) {
 
   const onNext = () => {
     onPaymentDone();
-    this.paypal.openModal();
+    paypal.current.openModal();
   };
 
   const publishOffer = async () => {
@@ -127,11 +127,11 @@ export default function PaymentSumary(props) {
     dispatch(setLoading(true));
     let s = new Service();
     let response = await s.scheduleOffer(payload);
-    // //console.log(
-    //   'test82 processOffer: ',
-    //   //JSON.stringify(processOffer),
-    //   JSON.stringify(response),
-    // );
+    console.log(
+      'test82 processOffer: ',
+      JSON.stringify(processOffer),
+      JSON.stringify(response),
+    );
     dispatch(setLoading(false));
     if (response.status) {
       navigation.navigate('Published');
@@ -237,9 +237,7 @@ export default function PaymentSumary(props) {
       </ScrollView>
 
       <Paypal
-        ref={ref => {
-          this.paypal = ref;
-        }}
+        ref={paypal}
 
         key={Math.random()}
         navigation={navigation}

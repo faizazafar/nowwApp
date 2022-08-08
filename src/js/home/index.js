@@ -35,13 +35,15 @@ export default function Home() {
   const [offers, setOffers] = useState([]);
   const user = useSelector((state) => state.user);
   const curr_location = useSelector((state) => state.curr_location);
+  console.log("curr_location:::::::", curr_location);
+
 
   const loadData = async () => {
+    console.log("curr_location:::::::", curr_location);
     dispatch(setLoading(true));
     let s = new Service();
-    console.log("curr_location:::::::", curr_location);
     let response = await s.getHomeOffers(curr_location);
-    // console.log("OFFERS ACCORDING TO LOCATION", response);
+    console.log("OFFERS ACCORDING TO LOCATION", response);
     dispatch(setLoading(false));
     ////console.log('test82 getHomeOffers: ', JSON.stringify(response));
 
@@ -58,61 +60,60 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
+  useEffect( async () => {
     {
-      async () => {
-        await getLocation();
         await checkUser();
         await loadData();
-      };
+      // async () => {
+      //   await getLocation();
+      //   await checkUser();
+      //   await loadData();
+      // };
     }
   }, []);
 
-  const getLocation = async () => {
-    console.log("dfadfafadfasad");
-    try {
-      let gps = new Gps();
-      gps.getCoordinates(async (isError, value) => {
-        if (!isError == true) {
-          dispatch(setCurrentLocation(value));
-          await updateLocationToServer(value.lat, value.lng);
-        } else {
-          Alert.alert("Error in getting GPS location, " + value);
-        }
-      });
-    } catch (e) {}
-  };
+  // const getLocation = async () => {
+  //   console.log("dfadfafadfasad");
+  //   try {
+  //     let gps = new Gps();
+  //     gps.getCoordinates(async (isError, value) => {
+  //       console.log("val", value)
+  //       if (!isError == true) {
+  //         dispatch(setCurrentLocation(value));
+  //         await updateLocationToServer(value.lat, value.lng);
+  //       } else {
+  //         Alert.alert("Error in getting GPS location, " + value);
+  //       }
+  //     });
+  //   } catch (e) {}
+  // };
 
-  // const onPress = ()=>{
+  // const updateLocationToServer = async (latitude, longitude) => {
+  //   dispatch(setLoading(true));
+  //   let deviceId = getUniqueId().replace(/-/g, "");
 
-  // }
+  //   let payload = {
+  //     userId: user.id,
+  //     lat: latitude,
+  //     lng: longitude,
+  //     timestamp: dateformat(new Date(), "yyyy-mm-dd HH:MM:ss"),
+  //     deviceId: deviceId,
+  //   };
 
-  const updateLocationToServer = async (latitude, longitude) => {
-    dispatch(setLoading(true));
-    let deviceId = getUniqueId().replace(/-/g, "");
+  //   let s = new Service();
+  //   let response = await s.updateUserLocation(payload);
+  //   // console.log(
+  //   //   'test82 updateUserLocation:',
+  //   //   JSON.stringify(response),
+  //   //   JSON.stringify(payload),
+  //   // );
 
-    let payload = {
-      userId: user.id,
-      lat: latitude,
-      lng: longitude,
-      timestamp: dateformat(new Date(), "yyyy-mm-dd HH:MM:ss"),
-      deviceId: deviceId,
-    };
+  //   dispatch(setLoading(false));
 
-    let s = new Service();
-    let response = await s.updateUserLocation(payload);
-    // console.log(
-    //   'test82 updateUserLocation:',
-    //   JSON.stringify(response),
-    //   JSON.stringify(payload),
-    // );
-
-    dispatch(setLoading(false));
-
-    if (!response.status) {
-      Alert.alert("updateLocationToServer", response.message);
-    }
-  };
+  //   if (!response.status) {
+  //     Alert.alert("updateLocationToServer", response.message);
+  //   }
+  // };
 
   const checkUser = async () => {
     if (!user) {

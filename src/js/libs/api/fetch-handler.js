@@ -2,8 +2,8 @@
 
 const BASE_URL =
 // 'http://newoffersweb.com/backend/index.php?key=lkash2987kjb2h99j'
-// 'http://newoffersweb.com/backend/index.php?key=lkash2987kjb2h99j&';
-  'https://clients.devaj.technology/sandbox/now-app/index.php?key=lkash2987kjb2h99j&';
+'http://newoffersweb.com/backend/index.php?key=lkash2987kjb2h99j&';
+  // 'https://clients.devaj.technology/sandbox/now-app/index.php?key=lkash2987kjb2h99j&';
   // 'http://3.22.231.86/sandbox/now-app/index.php?key=lkash2987kjb2h99j&';
 
 const encodePayload = data => {

@@ -27,7 +27,7 @@ export default function StepEight(props) {
   const user = useSelector(state => state.user);
   const dispatch = useDispatch();
   const {t} = useTranslation();
-
+console.log("useselector",offer)
   function onChange(phoneNumber) {
     let updatedOffer = JSON.parse(JSON.stringify(offer));
     updatedOffer.phoneNumber = phoneNumber;
@@ -103,7 +103,7 @@ export default function StepEight(props) {
     payload.append('phone', offer.phoneNumber);
     // payload.append('offerLocations', offer.locations);
 
-    console.log(offer);
+    console.log("offer",offer);
 
     dispatch(setLoading(true));
     let s = new Service();
@@ -120,8 +120,8 @@ export default function StepEight(props) {
 
       return response.data.offers[0];
     } else {
-      //console.log(response.message)
-      Alert.alert(response.message);
+      console.log(response.status)
+      Alert.alert("hi", response.message);
       return null;
     }
   };
@@ -136,6 +136,7 @@ export default function StepEight(props) {
   const onProcessNow = async () => {
     let newOffer = await saveOfferToDraft();
     if (newOffer != null) navigation.navigate('TargetZone', {offer: newOffer});
+    console.log(newOffer)
   };
 
   return (

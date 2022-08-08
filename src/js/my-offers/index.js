@@ -83,8 +83,8 @@ export default function MyOffers({navigation}) {
       <Header menu search logo />
       <Tab.Navigator tabBarOptions={tabBarOptions}>
         <Tab.Screen name={t("DRAFT")} component={Draft} />
-        <Tab.Screen name={t("Scheduled")} component={Scheduled} />
-        <Tab.Screen name={t("Published")} component={Published} />
+        <Tab.Screen name={"Scheduled"} component={Scheduled} />
+        <Tab.Screen name={"Published"} component={Published} />
         <Tab.Screen name={t("Expired")} component={Expired} />
       </Tab.Navigator>
     </View>
