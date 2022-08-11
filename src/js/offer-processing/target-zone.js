@@ -35,7 +35,7 @@ const DEVICE_WIDTH = Dimensions.get("window").width;
 const SLIDER_WIDTH = (DEVICE_WIDTH * 50) / 100;
 const GENDER_BTN_WIDTH = ((DEVICE_WIDTH * 90) / 100 - wp(30)) / 4;
 
-export default function TargetZone(props) {
+export default function TargetZone(props, state) {
   const [location, setLocation] = useState({
     latitude: 0,
     longitude: 0,
@@ -86,8 +86,8 @@ export default function TargetZone(props) {
     let processOffer = {
       userId: user.id,
       offerId: offer.id,
-      targetLat: this.map.state.newCoordinate.latitude,
-      targetLng: this.map.state.newCoordinate.longitude,
+      targetLat: state.newCoordinate.latitude,
+      targetLng: state.newCoordinate.longitude,
       targetRadius: radius[0],
       targetRadiusUnit: unit,
     };
@@ -203,12 +203,15 @@ export default function TargetZone(props) {
 
         <View style={styles.mapView}>
           <LocationMarker
-            // ref={(ref) => {
-            //   this.map = ref;
-            // }}
+            ref={(ref) => {
+              this.map = ref;
+            }}
             latlng={{ lat: curr_location?.lat, lng: curr_location?.lng }}
-            // onRegionChange={location}
-            // updateMarkerLocation={{lat: location?.latitude  , lng: location?.longitude }}
+            onRegionChange={location}
+            updateMarkerLocation={{
+              lat: curr_location?.lat,
+              lng: curr_location?.lng,
+            }}
             pointerSrc={require("../../assets/google-maps.png")}
             radius={getRadiusInMeters()}
           />

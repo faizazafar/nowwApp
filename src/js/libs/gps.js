@@ -1,6 +1,6 @@
 import { PermissionsAndroid, Platform, Alert } from "react-native";
 import Geolocation from "react-native-geolocation-service";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { setCurrentLocation } from "../../redux/actions";
 
 const options = {
@@ -72,8 +72,8 @@ export default class Gps {
     let isGranted = await this.checkPermission();
 
     let coordinates = {
-      lat: 24.860977,
-      lng: 67.067902,
+      lat: 0,
+      lng: 0,
     };
     onDone(false, coordinates);
     // return; //tempD
@@ -81,14 +81,14 @@ export default class Gps {
     if (isGranted) {
       Geolocation.getCurrentPosition(
         (position) => {
-          let coordinates = {
+          let coordinate = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          // console.log("COORDINATES", coordinates);
-          onDone(false, coordinates);
-          // dispatch(setCurrentLocation(coordinates));
-          // this.updateLocationToServer(coordinates.lat, coordinates.lng);
+          console.log("COORDINATES", coordinate);
+          onDone(false, coordinate);
+          // useDispatch(setCurrentLocation(coordinate));
+          // this.updateLocationToServer(coordinate.lat, coordinate.lng);
           // this.props.curr_location({
           //   ...this.props.curr_location,
           //   lat: position.coords.latitude,

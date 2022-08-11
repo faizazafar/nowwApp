@@ -33,15 +33,17 @@ export default function Home() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [offers, setOffers] = useState([]);
+  const [location, setLocation] = useState({});
   const user = useSelector((state) => state.user);
-  const curr_location = useSelector((state) => state.curr_location);
 
-  const loadData = async () => {
+  // console.log(user);
+  const loadData = async (lat, lng) => {
+    let loc = { lat: lat, lng: lng };
     dispatch(setLoading(true));
     let s = new Service();
-    console.log("curr_location:::::::", curr_location);
-    let response = await s.getHomeOffers(curr_location);
-    // console.log("OFFERS ACCORDING TO LOCATION", response);
+    console.log("curr_location:::::::", loc);
+    let response = await s.getHomeOffers(loc);
+    console.log("OFFERS ACCORDING TO LOCATION", response);
     dispatch(setLoading(false));
     ////console.log('test82 getHomeOffers: ', JSON.stringify(response));
 
@@ -59,22 +61,24 @@ export default function Home() {
   };
 
   useEffect(() => {
-    {
-      async () => {
-        await getLocation();
-        await checkUser();
-        await loadData();
-      };
+    // const curr_location = useSelector((state) => state.curr_location);
+
+    async function fetchData() {
+      await getLocation();
+
+      // await userlocation();
     }
+    fetchData();
   }, []);
 
   const getLocation = async () => {
-    console.log("dfadfafadfasad");
     try {
       let gps = new Gps();
       gps.getCoordinates(async (isError, value) => {
-        if (!isError == true) {
+        console.log("GETLOCATION", value, isError);
+        if (!isError === true) {
           dispatch(setCurrentLocation(value));
+
           await updateLocationToServer(value.lat, value.lng);
         } else {
           Alert.alert("Error in getting GPS location, " + value);
@@ -86,7 +90,16 @@ export default function Home() {
   // const onPress = ()=>{
 
   // }
-
+  // const userlocation = async () => {
+  //   const curr_location = useSelector((state) => state.curr_location);
+  //   if (curr_location?.lat) {
+  //     setLocation(curr_location);
+  //     console.log("asdasdasdajkljklljl");
+  //     await checkUser();
+  //   } else {
+  //     console.log("user location");
+  //   }
+  // };
   const updateLocationToServer = async (latitude, longitude) => {
     dispatch(setLoading(true));
     let deviceId = getUniqueId().replace(/-/g, "");
@@ -108,43 +121,51 @@ export default function Home() {
     // );
 
     dispatch(setLoading(false));
-
-    if (!response.status) {
-      Alert.alert("updateLocationToServer", response.message);
+    console.log(response);
+    if (response.status == true) {
+      console.log("in updateLocationToServer");
+      await loadData(latitude, longitude);
+      await checkUser();
+    } else {
+      // Alert.alert("updateLocationToServer", response.message);
     }
   };
 
   const checkUser = async () => {
-    if (!user) {
+    if (user) {
       dispatch(setLoading(true));
       let deviceId = getUniqueId().replace(/-/g, "");
 
       let time = dateformat(new Date(), "yyyy-mm-dd HH:MM:ss");
-      // console.log("time",time)
-      // let email = deviceId + 'dwsa11@nowuser.com';
+      time = time.replace(/-/g, "");
       let email = deviceId + time + "@nowuser.com";
-      console.log("e", email);
+      email = email.replace(" ", "");
+      let Newemail = email.replace(/:/g, "");
       // let email = deviceId + time;
 
       let payload = {
         firstname: deviceId,
         lastname: deviceId,
-        email,
+        email: Newemail,
         password: "12345678",
       };
+      console.log("e", Newemail);
       let s = new Service();
       let response = await s.signup(payload);
       //console.log('test82 signup:', JSON.stringify(response));
       dispatch(setLoading(false));
 
       if (response.status) {
-        Alert.alert(response.message);
+        // Alert.alert(response.message);
 
         await AsyncStorage.setItem("user", JSON.stringify(response.data));
         dispatch(setUser(response.data));
+        // await loadData();
       } else {
         Alert.alert(response.message);
       }
+    } else {
+      console.log("else in check user");
     }
   };
 
