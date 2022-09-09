@@ -9,8 +9,11 @@ import {
 } from '../../libs/responsive';
 import Colors from '../../settings/colors';
 import i18n from 'i18next';
+import { useSelector } from 'react-redux';
 
 export default function SingleRow(props) {
+  const lang = useSelector((state)=> state.language)
+  console.log(lang)
   let {heading, value, hideBorder, onPress} = props;
 
   let borderBottomWidth = hideBorder ? 0 : 0.5;

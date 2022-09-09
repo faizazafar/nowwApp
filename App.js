@@ -72,7 +72,7 @@ const MyStack = () => {
         <Stack.Screen name="StepEight" component={StepEight} />
       </Stack.Navigator>
 
-      {/* <Loader /> */}
+      <Loader />
     </NavigationContainer>
   );
 };

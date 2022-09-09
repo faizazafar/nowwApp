@@ -53,10 +53,10 @@ export default function OtherInfo(props) {
       <StepsBar currentStep={4} style={styles.bar} />
 
       <View style={styles.body}>
-        <Text style={styles.heading}>{t("@Offer Duration in Today's offers")}</Text>
+        <Text style={styles.heading}>{t("Offer Duration in Today's offers")}</Text>
 
         <Text style={styles.title}>
-        {t("@Please select offer duration (days the offer will be shown in today’s offers, before moving down to yesterday’s offers)")}
+        {t("Please select offer duration (days the offer will be shown in today’s offers, before moving down to yesterday’s offers)")}
 
         </Text>
         <TouchableOpacity
@@ -80,7 +80,7 @@ export default function OtherInfo(props) {
           />
         </TouchableOpacity>
 
-        <Text style={styles.optional}>{t("@Optional")}</Text>
+        <Text style={styles.optional}>{t("Optional")}</Text>
 
         <MediaButton
           txt={t('@NEXT')}

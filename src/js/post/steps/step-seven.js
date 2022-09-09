@@ -47,15 +47,15 @@ export default function StepSeven(props) {
       <Header back logo border transparent />
 
       <View style={styles.body}>
-        <Text style={styles.heading}>{t("@Details")}</Text>
-        <Text style={styles.title}>{t("@Please enter the details")}</Text>
+        <Text style={styles.heading}>{t("Details")}</Text>
+        <Text style={styles.title}>{t("Please enter the details")}</Text>
         <TextInput
           textAlignVertical={'top'}
           multiline={true}
           style={styles.input}
           onChangeText={onChange}
           value={offer.details}
-          placeholder={t("@Details(optional)")}
+          placeholder={t("Details (optional)")}
           placeholderTextColor={'#ccc'}
         />
         <Text style={styles.minWords}>{t("Max 350 words")}</Text>
@@ -63,7 +63,7 @@ export default function StepSeven(props) {
         <StepsBar currentStep={7} style={styles.bar} />
 
         <MediaButton
-          txt={'NEXT'}
+          txt={t('NEXT')}
           style={{backgroundColor: 'rgb(228, 45, 72)', marginTop: hp(20)}}
           simple
           onPress={() => {

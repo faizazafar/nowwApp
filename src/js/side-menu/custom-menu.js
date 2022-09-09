@@ -59,19 +59,19 @@ export default function CustomMenu() {
   
   const visitorMenu = [
     {
-      navOptionName: t("@Home"),
+      navOptionName: t("Home"),
       screenToNavigate: 'Home',
     },
     {
-      navOptionName: t("@MyInterests"),
+      navOptionName: t("My Interests"),
       screenToNavigate: 'MyInterests',
     },
     {
-      navOptionName: t("@Login"),
+      navOptionName: t("Login"),
       screenToNavigate: 'Login',
     },
     {
-      navOptionName: t("@Register"),
+      navOptionName: t("Register"),
       screenToNavigate: 'SignUp',
     },
   ];

@@ -6,6 +6,7 @@ import {
   AUDIENCE,
   CURRENT_LOCATION,
   DELETE_OFFER,
+  SET_LANGUAGE,
 } from './types';
 
 export const setOffer = offer => {
@@ -54,5 +55,11 @@ export const setDeleteOffer = offer => {
   return {
     type: DELETE_OFFER,
     payload: offer,
+  };
+}
+export const setLanguage = language => {
+  return {
+    type: SET_LANGUAGE,
+    payload: language,
   };
 }

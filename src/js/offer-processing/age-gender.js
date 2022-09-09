@@ -70,7 +70,7 @@ export default function AgeGender(props) {
     navigation.navigate('Interest', {processOffer});
   };
 
-  let ageStr = `${multiSliderValue[0]} ${t('@yearsto')} ${multiSliderValue[1]} ${t("@years")}`;
+  let ageStr = `${multiSliderValue[0]} ${t('years to')} ${multiSliderValue[1]} ${t("years")}`;
   if (multiSliderValue[1] == 70) {
     ageStr = `${multiSliderValue[0]} years to 70+ years`;
   }
@@ -81,20 +81,20 @@ export default function AgeGender(props) {
       <StepsBar currentStep={2} style={styles.bar} />
 
       <View style={styles.body}>
-        <Text style={styles.heading}>{t("@TargetGender")}</Text>
-        <Text style={styles.title}>{t("@Pleaseselectthetargetgender")}</Text>
+        <Text style={styles.heading}>{t("Target Gender")}</Text>
+        <Text style={styles.title}>{t("Please select the target gender")}</Text>
 
         <View style={styles.buttonRow}>
           <SelectiveButton
             style={{width: GENDER_BTN_WIDTH}}
-            title={t("@Male")}
+            title={t("Male")}
             selected={gender == 1}
             onPress={() => {
               setGender(1);
             }}
           />
           <SelectiveButton
-            title={t("@Female")}
+            title={t("Female")}
             style={{width: GENDER_BTN_WIDTH, marginLeft: wp(10)}}
             selected={gender == 2}
             onPress={() => {
@@ -102,7 +102,7 @@ export default function AgeGender(props) {
             }}
           />
           <SelectiveButton
-            title={t("@ALL")}
+            title={t("ALL")}
             style={{width: GENDER_BTN_WIDTH, marginLeft: wp(10)}}
             selected={gender == 3}
             onPress={() => {
@@ -111,8 +111,8 @@ export default function AgeGender(props) {
           />
         </View>
 
-        <Text style={styles.heading}>{t("@TargetAge")}</Text>
-        <Text style={styles.title}>{t("@Pleaseselectthetargetage")}</Text>
+        <Text style={styles.heading}>{t("Target Age")}</Text>
+        <Text style={styles.title}>{t("Please select the target age")}</Text>
 
         <View style={{marginTop: hp(20), alignSelf: 'center'}}>
           <MultiSlider
@@ -136,7 +136,7 @@ export default function AgeGender(props) {
         </View>
 
         <MediaButton
-          txt={t("@NEXT")}
+          txt={t("NEXT")}
           style={{backgroundColor: 'rgb(228, 45, 72)', marginTop: hp(40)}}
           simple
           onPress={onNext}

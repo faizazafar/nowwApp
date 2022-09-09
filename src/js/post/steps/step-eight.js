@@ -144,27 +144,27 @@ console.log("useselector",offer)
       <Header back logo border transparent />
 
       <View style={styles.body}>
-        <Text style={styles.heading}>{t("PhoneNumber")}</Text>
-        <Text style={styles.title}>{t("@Pleaseenterthephonenumber")}</Text>
+        <Text style={styles.heading}>{t("Phone Number")}</Text>
+        <Text style={styles.title}>{t("Please enter the phonenumber")}</Text>
         <TextInput
           style={styles.input}
           onChangeText={onChange}
           value={offer.phoneNumber}
-          placeholder={t("@Phonenumber(optional)")}
+          placeholder={t("Phone number (optional)")}
           placeholderTextColor={'#ccc'}
           keyboardType="numeric"
         />
         <StepsBar currentStep={8} style={styles.bar} />
 
         <MediaButton
-          txt={t("@PROCESSNOW")}
+          txt={t("PROCESS NOW")}
           style={{backgroundColor: 'rgb(228, 45, 72)', marginTop: hp(20)}}
           simple
           onPress={onProcessNow}
         />
 
         <MediaButton
-          txt={t("@SAVETODRAFT")}
+          txt={t("SAVE TO DRAFT")}
           style={{
             backgroundColor: Colors.BLUE,
             marginTop: hp(10),

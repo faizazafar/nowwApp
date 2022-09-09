@@ -120,7 +120,8 @@ export default function Home() {
       dispatch(setLoading(true));
       let deviceId = getUniqueId().replace(/-/g, "");
 
-      let time = dateformat(new Date(), "yyyy-mm-dd HH:MM:ss");
+      let time = parseInt((new Date().getTime() / 1000).toFixed(0))
+
       // console.log("time",time)
       // let email = deviceId + 'dwsa11@nowuser.com';
       let email = deviceId + time + "@nowuser.com";
@@ -139,11 +140,14 @@ export default function Home() {
       dispatch(setLoading(false));
 
       if (response.status) {
+        console.log(response.message)
+
         Alert.alert(response.message);
 
         await AsyncStorage.setItem("user", JSON.stringify(response.data));
         dispatch(setUser(response.data));
       } else {
+        console.log(response.message)
         Alert.alert(response.message);
       }
     }
@@ -160,7 +164,6 @@ export default function Home() {
 
   const renderOffers = () => {
     return offers.map((item) => {
-      // console.log("RENDER OFFER", item);
       return (
         <View>
           {item.interest && (

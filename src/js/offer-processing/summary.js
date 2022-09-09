@@ -24,11 +24,11 @@ export default function OfferDetails(props) {
 
   getGenderValue = () => {
     if (processOffer.targetGender == 'm') {
-      return t("@Male");
+      return t("Male");
     } else if (processOffer.targetGender == 'f') {
-      return t("@Female");
+      return t("Female");
     } else {
-      return t("@All");
+      return t("All");
     }
   };
 
@@ -54,11 +54,11 @@ export default function OfferDetails(props) {
           </View>
 
           <SingleRow
-            heading={t("@Interest")}
+            heading={t("Interest")}
             value={`${audienceData.withInterest} ${t("Peoples")}`}
           />
           <SingleRow
-            heading={t("NonInterest")}
+            heading={t("Non Interest")}
             value={`${audienceData.withoutInterest} ${t("Peoples")}`}
           />
 
@@ -68,10 +68,10 @@ export default function OfferDetails(props) {
               processOffer.targetRadius + ' ' + processOffer.targetRadiusUnit
             }
           />
-          <SingleRow heading={t("@TargetGender")} value={getGenderValue()} />
+          <SingleRow heading={t("Target Gender")} value={getGenderValue()} />
           <SingleRow
             heading={t("Target Age")}
-            value={`${processOffer.targetAgeMin} ${t("@yearsto")} ${processOffer.targetAgeMax} ${t('@years')}`}
+            value={`${processOffer.targetAgeMin} ${t("years to")} ${processOffer.targetAgeMax} ${t('years')}`}
           />
           <SingleRow
             heading={t("Offer Duration")}

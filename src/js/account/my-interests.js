@@ -26,7 +26,8 @@ import Service from '../libs/api/service';
 import {useDispatch, useSelector} from 'react-redux';
 import {setLoading, setUser} from '../../redux/actions';
 import { useTranslation } from 'react-i18next';
-
+import i18n from 'i18next';
+import { ScrollView } from 'react-native-gesture-handler';
 const DEVICE_WIDTH = Dimensions.get('window').width;
 const BOX_SIZE = (DEVICE_WIDTH * 90) / 100 / 4 - 6;
 
@@ -40,12 +41,14 @@ export default function MyInterests(props) {
   const [data, onDataChange] = React.useState([]);
   const user = useSelector(state => state.user);
 
+  console.log(i18n.language)
+
   useEffect(() => {
     loadData();
 
-    if (user.interests) {
+    if (user?.interests) {
       let allIds = [];
-      user.interests.forEach(item => {
+      user?.interests.forEach(item => {
         allIds.push(item.id);
       });
       onSelect(allIds);
@@ -113,6 +116,7 @@ export default function MyInterests(props) {
       let tintColor = isActive ? Colors.RED : Colors.WHITE;
 
       return (
+        // <></>
         <TouchableOpacity
           activeOpacity={0.4}
           key={index}
@@ -124,7 +128,13 @@ export default function MyInterests(props) {
             source={{uri: item.image}}
             style={[styles.image, {tintColor}]}
           />
-          <Text style={styles.name}>{item.name} </Text>
+          {
+            i18n.language == 'en' ?
+            <Text style={styles.name}>{item.name} </Text>
+            :
+            <Text style={styles.name}>{item.arabicName} </Text>
+
+          }
         </TouchableOpacity>
       );
     });
@@ -135,7 +145,7 @@ export default function MyInterests(props) {
   return (
     <View style={styles.container}>
       <Header menu logo border transparent />
-
+<ScrollView contentContainerStyle={{paddingBottom:20}}>
       <View style={styles.body}>
         <Text style={styles.heading}>{t("My Interests")}</Text>
         <Text style={styles.title}>
@@ -146,7 +156,7 @@ export default function MyInterests(props) {
         <ZRCheckBox
           active={allCheck}
           style={styles.checkBox}
-          txt={t("@SELECTALL")}
+          txt={t("SELECT ALL")}
           textStyle={styles.detailsTxt}
           iconSrc={require('../../assets/blank-check-box.png')}
           iconStyle={styles.tickIcon}
@@ -154,12 +164,13 @@ export default function MyInterests(props) {
         />
 
         <MediaButton
-          txt={t('@Save')}
+          txt={t('Save')}
           style={{backgroundColor: 'rgb(228, 45, 72)', marginTop: hp(50)}}
           simple
           onPress={onSave}
         />
       </View>
+      </ScrollView>
     </View>
   );
 }
@@ -195,7 +206,7 @@ const styles = StyleSheet.create({
   checkBox: {
     flexDirection: 'row',
     flexDirection: 'row-reverse',
-    alignSelf: 'flex-start',
+    alignSelf:  i18n.language == 'en' ? 'flex-start' : 'flex-end' ,
     alignItems: 'center',
     marginTop: hp(10),
     marginRight: wp(5),

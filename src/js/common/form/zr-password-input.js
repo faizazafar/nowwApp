@@ -18,7 +18,7 @@ import {
 
 import ZRInput from './zr-input';
 import Colors from '../../settings/colors';
-
+import i18n from 'i18next'
 export default class ZRPasswordInput extends ZRInput {
   constructor() {
     super();
@@ -41,7 +41,7 @@ export default class ZRPasswordInput extends ZRInput {
       : require('../../../assets/show-eye.png');
 
     return (
-      <View style={{width: this.props.style.width, alignSelf: 'center'}}>
+      <View style={{width: this.props.style.width}}>
         <View>
           <TextInput
             ref={ref => {
@@ -63,6 +63,9 @@ export default class ZRPasswordInput extends ZRInput {
           </TouchableOpacity>
         </View>
         {isAlert && <Text style={styles.alertStr}>* {alertMsg}</Text>}
+        
+        
+        {console.log(i18n.language)}
       </View>
     );
   }
@@ -78,8 +81,10 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     position: 'absolute',
-    right: 0,
+    right:0,
+    // right:  i18n.language === 'en' ?  0 : 270,
     bottom: 0,
+    // left:0,
     height: '85%',
     width: hp(50),
     justifyContent: 'center',

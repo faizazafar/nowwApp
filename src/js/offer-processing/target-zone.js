@@ -145,14 +145,14 @@ export default function TargetZone(props) {
       <View style={styles.checksRow}>
         <SelectiveButton
           style={{ width: GENDER_BTN_WIDTH, height: hp(30) }}
-          title={t("@Meters")}
+          title={t("Meters")}
           selected={unit == "m"}
           onPress={() => {
             convertUnit("m", getRadiusInMeters());
           }}
         />
         <SelectiveButton
-          title={t("@Kilometer")}
+          title={t("Kilometer")}
           style={{
             width: GENDER_BTN_WIDTH,
             marginLeft: wp(10),
@@ -164,7 +164,7 @@ export default function TargetZone(props) {
           }}
         />
         <SelectiveButton
-          title={t("@Yards")}
+          title={t("Yards")}
           style={{
             width: GENDER_BTN_WIDTH,
             marginLeft: wp(10),
@@ -176,7 +176,7 @@ export default function TargetZone(props) {
           }}
         />
         <SelectiveButton
-          title={t("@Miles")}
+          title={t("Miles")}
           style={{
             width: GENDER_BTN_WIDTH,
             marginLeft: wp(10),
@@ -198,8 +198,8 @@ export default function TargetZone(props) {
       <View style={styles.body}>
         <StepsBar currentStep={1} style={styles.bar} />
 
-        <Text style={styles.heading}>{t("@TargetZone")}</Text>
-        <Text style={styles.title}>{t("@Pleaseselectthetargetzone")}</Text>
+        <Text style={styles.heading}>{t("Target Zone")}</Text>
+        <Text style={styles.title}>{t("Please select the targetzone")}</Text>
 
         <View style={styles.mapView}>
           <LocationMarker
@@ -238,7 +238,7 @@ export default function TargetZone(props) {
               onChangeText={(address) => {
                 onAddressStrChange(address);
               }}
-              placeholder={t("@Searchforaaddress")}
+              placeholder={t("Search for aaddress")}
               value={addressStr}
             />
           </View>
@@ -246,7 +246,7 @@ export default function TargetZone(props) {
 
         <View style={styles.lowerBody}>
           <Text style={styles.radiusHeading}>
-            {t("@Pleaseselectthetargetzoneradius")}
+            {t("Please select the target zone radius")}
           </Text>
 
           {mesurements()}
@@ -277,7 +277,7 @@ export default function TargetZone(props) {
               }}
               keyboardType="decimal-pad"
               value={radius[0].toString()}
-              placeholder={t("@Radius")}
+              placeholder={t("Radius")}
               placeholderTextColor={"#ccc"}
             />
           </View>

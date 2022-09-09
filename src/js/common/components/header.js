@@ -22,14 +22,18 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import { useState , useEffect , useRef} from 'react';
 import ModalDropdown from 'react-native-modal-dropdown';
+import {useDispatch} from 'react-redux';
+import { setLanguage } from '../../../redux/actions';
 
 
 export default function Header(props) {
   const navigation = useNavigation();
   const [state, setstate] = useState('')
-  const [language, setLanguage] = useState('');
+  const [language, setLanguages] = useState('');
   const audienceData = useSelector(state => state.audience);
   const dropDownref = useRef(null);
+  const dispatch = useDispatch();
+
 
   const omModalPress = () => {
     console.log("hello")
@@ -98,14 +102,17 @@ export default function Header(props) {
               console.log("select")
               if(index == 0)
               {
+                dispatch(setLanguage('en'));
                 i18n.changeLanguage('en')
 
               }
               else if ( index == 1)
               {
                 i18n.changeLanguage('ar')
+                dispatch(setLanguage('ar'));
+
               }
-              setLanguage(option);
+              setLanguages(option);
             }}
             
             options={['EN' , 'AR']}

@@ -28,7 +28,8 @@ export default function ZRSwitch(props) {
     </>
     :
     <>
-    <TouchableOpacity onPress={onPress} activeOpacity={0.5} style={{flexDirection:"row-reverse" }} >
+    <TouchableOpacity onPress={onPress} activeOpacity={0.5} style={{flexDirection:"row-reverse" 
+   }}  >
     <View style={styles.box}>
        <View style={innerStyle}></View>
       </View>
@@ -59,7 +60,8 @@ const styles = StyleSheet.create({
     borderColor: Colors.WHITE,
     padding: 2,
     marginTop: hp(2),
-    marginLeft: i18n.language == 'en' ? hp(0) : hp(12)
+    marginLeft: i18n.language == 'en' ? hp(0) : hp(12),
+    marginBottom: 5
   },
   innerBox: {
     flex: 1,

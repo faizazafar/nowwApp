@@ -24,12 +24,15 @@ import Service from '../libs/api/service';
 import {useDispatch} from 'react-redux';
 import {setLoading, setUser} from '../../redux/actions';
 import FacebookLogin from './social-media/facebook-login';
+import GmailLogin from './social-media/gmail-login';
 import Header from '../common/components/header';
+import { useTranslation } from 'react-i18next';
 
 export default function SignUp() {
   let inputRefs = [];
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const {t} = useTranslation();
 
   const [firstname, onfFirstNameInput] = React.useState('');
   const [lastname, onLastNameInput] = React.useState('');
@@ -37,7 +40,7 @@ export default function SignUp() {
   const [mobile, onMobileInput] = React.useState('');
   const [password, onPasswordInput] = React.useState('');
 
-  onRegister = async () => {
+  const onRegister = async () => {
     let validator = new Validator();
     let isValid = validator.validateInputs(inputRefs);
 
@@ -59,7 +62,7 @@ export default function SignUp() {
     }
   };
 
-  gotoLogin = () => {
+  const gotoLogin = () => {
     navigation.navigate('Login');
   };
 
@@ -67,8 +70,8 @@ export default function SignUp() {
     <View style={styles.container}>
       <Header logo back />
       <View style={styles.body}>
-        <Text style={styles.heading}>Welcome</Text>
-        <Text style={styles.subHeading}>Create an account</Text>
+        <Text style={styles.heading}>{t('Welcome')}</Text>
+        <Text style={styles.subHeading}>{t('Create an account')}</Text>
 
         <View style={styles.inputs}>
           <ZRTextInput
@@ -77,7 +80,7 @@ export default function SignUp() {
             }}
             style={styles.textInput}
             onChangeText={onfFirstNameInput}
-            placeholder={'First Name'}
+            placeholder={t('First Name')}
             placeholderTextColor={'#ccc'}
             value={firstname}
             validation={[
@@ -94,7 +97,7 @@ export default function SignUp() {
             }}
             style={styles.textInput}
             onChangeText={onLastNameInput}
-            placeholder={'Last Name'}
+            placeholder={t("Last Name")}
             placeholderTextColor={'#ccc'}
             value={lastname}
             validation={[
@@ -110,7 +113,7 @@ export default function SignUp() {
             }}
             style={styles.textInput}
             onChangeText={onEmailInput}
-            placeholder={'Email'}
+            placeholder={t('Email')}
             placeholderTextColor={'#ccc'}
             value={email}
             validation={[
@@ -130,7 +133,7 @@ export default function SignUp() {
             }}
             style={styles.textInput}
             onChangeText={onMobileInput}
-            placeholder={'Mobile Number'}
+            placeholder={t('Mobile Number')}
             placeholderTextColor={'#ccc'}
             value={mobile}
             validation={[
@@ -146,7 +149,7 @@ export default function SignUp() {
             }}
             style={styles.textInput}
             onChangeText={onPasswordInput}
-            placeholder={'Password'}
+            placeholder={t('Password')}
             placeholderTextColor={'#ccc'}
             value={password}
             validation={[
@@ -160,7 +163,7 @@ export default function SignUp() {
 
         <View style={styles.buttons}>
           <MediaButton
-            txt={'SIGN IN'}
+            txt={t('SIGN UP')}
             style={{backgroundColor: 'rgb(228, 45, 72)'}}
             simple
             onPress={() => {
@@ -169,23 +172,23 @@ export default function SignUp() {
           />
 
           <MediaButton
-            txt={'Connect With Facebook'}
+            txt={t('Connect With Facebook')}
             style={{backgroundColor: '#3b5998'}}
-            onPress={onFacebookLogin}
+            onPress={FacebookLogin}
             icon={require('../../assets/facebook.png')}
           />
 
           <MediaButton
-            txt={'Connect With Gmail'}
+            txt={t('Connect With Gmail')}
             style={{backgroundColor: 'rgb(219, 76, 63)'}}
-            onPress={onGoogleLogin}
+            onPress={GmailLogin}
             icon={require('../../assets/g-plus.png')}
           />
         </View>
       </View>
 
       <TouchableOpacity onPress={gotoLogin}>
-        <Text style={styles.signupStr}>Already have an account? SIGN IN</Text>
+        <Text style={styles.signupStr}>{t("Already have an account? SIGN IN")}</Text>
       </TouchableOpacity>
     </View>
   );

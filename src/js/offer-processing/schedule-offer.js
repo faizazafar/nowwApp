@@ -56,7 +56,7 @@ export default function ScheduleOffer(props) {
 
     dispatch(setLoading(false));
     if (response.status) {
-      navigation.navigate('Scheduled');
+      navigation.navigate(t('Scheduled'));
     } else {
       Alert.alert(response.message);
     }
@@ -80,13 +80,13 @@ export default function ScheduleOffer(props) {
       <StepsBar currentStep={5} style={styles.bar} />
 
       <View style={styles.body}>
-        <Text style={styles.heading}>{t("@Offer launch date & time")}</Text>
+        <Text style={styles.heading}>{t("Offer launch date & time")}</Text>
         <Text style={styles.title}>
-          {t("@You can schedule the offer now or later")}
+          {t("You can schedule the offer now or later")}
         </Text>
 
         <Text style={styles.note}>
-          {t("@Offer will publish at the selected date and time in the dropped pin location.")}
+          {t("Offer will publish at the selected date and time in the dropped pin location.")}
         </Text>
 
         <MediaButton

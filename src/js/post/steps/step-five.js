@@ -121,7 +121,7 @@ console.log("step five current loc", curr_location)
             }}
             activeOpacity={0.5}
             style={[styles.locationButton, {marginLeft, backgroundColor}]}>
-            <Text style={styles.btnTxt}>{t("@Location")} #{index + 1}</Text>
+            <Text style={styles.btnTxt}>{t("Location")} #{index + 1}</Text>
           </TouchableOpacity>
         );
       }
@@ -170,7 +170,7 @@ console.log("step five current loc", curr_location)
 
       <View style={styles.body}>
         <Text style={styles.heading}>{t("Location")}</Text>
-        <Text style={styles.title}>{t("Pleaseassigntheshowroom/office")}</Text>
+        <Text style={styles.title}>{t("Please assign the showroom/office")}</Text>
 
         <View style={styles.mapView}>
           <LocationMarker
@@ -187,7 +187,7 @@ console.log("step five current loc", curr_location)
               onChangeText={address => {
                 onAddressStrChange(address);
               }}
-              placeholder={t("@Searchforaaddress")}
+              placeholder={t("Search for aaddress")}
               value={addressStr}
             />
           </View>

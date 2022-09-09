@@ -27,6 +27,9 @@ import {setLoading, setUser} from '../../redux/actions';
 import FacebookLogin from './social-media/facebook-login';
 import GmailLogin from './social-media/gmail-login';
 import Header from '../common/components/header';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { i18n } from '../libs/dateformat';
 
 export default function Login() {
   let inputRefs = [];
@@ -34,13 +37,17 @@ export default function Login() {
   const dispatch = useDispatch();
   const [email, onEmailInput] = React.useState('');
   const [password, onPasswordInput] = React.useState('');
+  const {t} = useTranslation();
+  const language = useSelector((state) => state.language);
 
+  const a = language
+// console.log("hjg", language)
   useEffect(() => {
     let gmailLogin = new GmailLogin();
     gmailLogin.configure();
   });
 
-  onEmailLogin = async () => {
+  const onEmailLogin = async () => {
     let validator = new Validator();
     let isValid = validator.validateInputs(inputRefs);
 
@@ -61,15 +68,15 @@ export default function Login() {
     }
   };
 
-  onForgotPassword = () => {
+  const onForgotPassword = () => {
     navigation.navigate('ForgotPassword');
   };
 
-  gotoSignup = () => {
+  const gotoSignup = () => {
     navigation.navigate('SignUp');
   };
 
-  socialLogin = async data => {
+  const socialLogin = async data => {
     var payload = new FormData();
     Object.keys(data).forEach(key => {
       payload.append(key, data[key]);
@@ -89,14 +96,14 @@ export default function Login() {
     }
   };
 
-  onFacebookLogin = () => {
+  const onFacebookLogin = () => {
     let facebookLogin = new FacebookLogin();
     facebookLogin.signIn(payload => {
       socialLogin(payload);
     });
   };
 
-  onGoogleLogin = () => {
+  const onGoogleLogin = () => {
     let gmailLogin = new GmailLogin();
     gmailLogin.signIn(payload => {
       socialLogin(payload);
@@ -107,8 +114,8 @@ export default function Login() {
     <View style={styles.container}>
       <Header logo back />
       <View style={styles.body}>
-        <Text style={styles.heading}>Welcome</Text>
-        <Text style={styles.subHeading}>Sign in to continue</Text>
+        <Text style={styles.heading}>{t("Welcome")}</Text>
+        <Text style={styles.subHeading}>{t('Sign in to continue')}</Text>
 
         <View style={styles.inputs}>
           <ZRTextInput
@@ -117,7 +124,7 @@ export default function Login() {
             }}
             style={styles.textInput}
             onChangeText={onEmailInput}
-            placeholder={'Email or Mobile Number'}
+            placeholder={t('Email or Mobile Number')}
             placeholderTextColor={'#ccc'}
             value={email}
             validation={[
@@ -135,9 +142,9 @@ export default function Login() {
             ref={ref => {
               inputRefs[1] = ref;
             }}
-            style={styles.textInput}
+            style={styles.textInputOne}
             onChangeText={onPasswordInput}
-            placeholder={'Password'}
+            placeholder={t('Password')}
             placeholderTextColor={'#ccc'}
             value={password}
             validation={[
@@ -151,7 +158,7 @@ export default function Login() {
 
         <View style={styles.buttons}>
           <MediaButton
-            txt={'SIGN IN'}
+            txt={t('SIGN IN')}
             style={{backgroundColor: 'rgb(228, 45, 72)'}}
             simple
             onPress={() => {
@@ -160,14 +167,14 @@ export default function Login() {
           />
 
           <MediaButton
-            txt={'Connect With Facebook'}
+            txt={t('Connect With Facebook')}
             style={{backgroundColor: '#3b5998'}}
             onPress={onFacebookLogin}
             icon={require('../../assets/facebook.png')}
           />
 
           <MediaButton
-            txt={'Connect With Gmail'}
+            txt={t('Connect With Gmail')}
             style={{backgroundColor: 'rgb(219, 76, 63)'}}
             onPress={onGoogleLogin}
             icon={require('../../assets/g-plus.png')}
@@ -175,12 +182,12 @@ export default function Login() {
         </View>
 
         <TouchableOpacity onPress={onForgotPassword}>
-          <Text style={styles.forgotStr}>Forgot your password ?</Text>
+          <Text style={styles.forgotStr}>{t("Forgot your password ?")}</Text>
         </TouchableOpacity>
       </View>
 
       <TouchableOpacity onPress={gotoSignup}>
-        <Text style={styles.signupStr}>Don't have an account? SIGN UP</Text>
+        <Text style={styles.signupStr}>{t("Don't have an account? SIGN UP")}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -239,5 +246,16 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: Colors.BORDER,
     fontFamily: 'Roboto-Medium',
+  },
+  textInputOne: {
+    marginTop: hp(10),
+    width: '100%',
+    color: '#ccc',
+    height: Platform.OS === 'ios' ? hp(42) : hp(44),
+    fontSize: fs(18),
+    borderBottomWidth: 1,
+    borderColor: Colors.BORDER,
+    fontFamily: 'Roboto-Medium',
+    textAlign : i18n.language == 'ar' ? 'right' : 'left'
   },
 });

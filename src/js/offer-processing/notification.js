@@ -65,12 +65,12 @@ export default function Notification(props) {
       <StepsBar currentStep={4} style={styles.bar} />
 
       <View style={styles.body}>
-        <Text style={styles.heading}>{t("@Customize Notification")}</Text>
+        <Text style={styles.heading}>{t("Customize Notification")}</Text>
 
         <ZRSwitch
           active={checkIndex == 0}
           style={styles.checkBox}
-          txt={t("@Brand Name entered only")}
+          txt={t("Brand Name entered only")}
           textStyle={styles.detailsTxt}
           iconSrc={require('../../assets/blank-check-box.png')}
           iconStyle={styles.tickIcon}
@@ -82,7 +82,7 @@ export default function Notification(props) {
         <ZRSwitch
           active={checkIndex == 1}
           style={styles.checkBox}
-          txt={t("@Brand Name and Product name entered only")}
+          txt={t("Brand Name and Product name entered only")}
           textStyle={styles.detailsTxt}
           iconSrc={require('../../assets/blank-check-box.png')}
           iconStyle={styles.tickIcon}
@@ -94,7 +94,7 @@ export default function Notification(props) {
         <ZRSwitch
           active={checkIndex == 2}
           style={styles.checkBox}
-          txt={t("@Brand Name and offer entered only")}
+          txt={t("Brand Name and offer entered only")}
           textStyle={styles.detailsTxt}
           iconSrc={require('../../assets/blank-check-box.png')}
           iconStyle={styles.tickIcon}
@@ -106,7 +106,7 @@ export default function Notification(props) {
         <ZRSwitch
           active={checkIndex == 3}
           style={styles.checkBox}
-          txt={t("@Brand Name, Product name and offer entered")}
+          txt={t("Brand Name, Product name and offer entered")}
           textStyle={styles.detailsTxt}
           iconSrc={require('../../assets/blank-check-box.png')}
           iconStyle={styles.tickIcon}
@@ -118,7 +118,7 @@ export default function Notification(props) {
         <ZRSwitch
           active={checkIndex == 4}
           style={styles.checkBox}
-          txt={t("@Customize Notification")}
+          txt={t("Customize Notification")}
           textStyle={styles.detailsTxt}
           iconSrc={require('../../assets/blank-check-box.png')}
           iconStyle={styles.tickIcon}
@@ -133,7 +133,7 @@ export default function Notification(props) {
             style={styles.multiInput}
             onChangeText={onNotificationChnage}
             value={notification}
-            placeholder={t("@Enter customized notification here...")}
+            placeholder={t("Enter customized notification here...")}
             placeholderTextColor={'#ccc'}
           />
         )}
@@ -141,7 +141,7 @@ export default function Notification(props) {
         <View style={styles.notificationContainer}>
           <Image style={styles.image} source={{uri: dummyOffer.image}} />
           <View style={styles.rightView}>
-            <Text style={styles.notifHeding}>{t("@NOW")}</Text>
+            <Text style={styles.notifHeding}>{t("NOW")}</Text>
             <Text style={styles.notifTxt}>{getNotificationTxt()}</Text>
           </View>
         </View>

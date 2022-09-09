@@ -58,7 +58,7 @@ export default function Interests(props) {
     }
   };
 
-  getAudience = async () => {
+  const getAudience = async () => {
     let payload = {
       targetLat: processOffer.targetLat,
       targetLng: processOffer.targetLat,
@@ -79,7 +79,7 @@ export default function Interests(props) {
     }
   };
 
-  onNext = () => {
+  const onNext = () => {
     processOffer.offerInterests = selectedItems;
     navigation.navigate('OtherInfo', {processOffer});
   };
@@ -132,7 +132,10 @@ export default function Interests(props) {
             source={{uri: item.image}}
             style={[styles.image, {tintColor}]}
           />
-          <Text style={styles.name}>{item.name} </Text>
+          <Text style={styles.name}>{
+
+            i18n.language == 'en' ? item.name : item.arabicName
+     } </Text>
         </TouchableOpacity>
       );
     });
@@ -147,7 +150,7 @@ export default function Interests(props) {
       <StepsBar currentStep={3} style={styles.bar} />
 
       <View style={styles.body}>
-        <Text style={styles.heading}>{t("@Interest")}</Text>
+        <Text style={styles.heading}>{t("Interest")}</Text>
         <Text style={styles.title}>
           {t("Please select the interest groups to target")}
         </Text>
@@ -159,7 +162,7 @@ export default function Interests(props) {
               source={require('../../assets/user.png')}
             />
             <Text style={styles.count}>
-             {t("@Interest")} ( {audienceData.withInterest} )
+             {t("Interest")} ( {audienceData.withInterest} )
             </Text>
           </View>
           <View style={[styles.audienceItem, {marginLeft: wp(20)}]}>
@@ -168,7 +171,7 @@ export default function Interests(props) {
               source={require('../../assets/user.png')}
             />
             <Text style={styles.count}>
-              {t("@Noninterest")} ( {audienceData.withoutInterest} )
+              {t("Non interest")} ( {audienceData.withoutInterest} )
             </Text>
           </View>
         </View>
@@ -177,7 +180,7 @@ export default function Interests(props) {
         <ZRCheckBox
           active={allCheck}
           style={styles.checkBox}
-          txt={t("@SELECTALL")}
+          txt={t("SELECT ALL")}
           textStyle={styles.detailsTxt}
           iconSrc={require('../../assets/blank-check-box.png')}
           iconStyle={styles.tickIcon}

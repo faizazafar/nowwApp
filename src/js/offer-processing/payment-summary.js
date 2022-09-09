@@ -134,7 +134,7 @@ export default function PaymentSumary(props) {
     );
     dispatch(setLoading(false));
     if (response.status) {
-      navigation.navigate('Published');
+      navigation.navigate(t('Published'));
     } else {
       console.log(response.message)
       Alert.alert(response.message);
@@ -207,7 +207,7 @@ export default function PaymentSumary(props) {
 
           <Text style={[styles.heading, {marginBottom: 0, fontSize: fs(16)}]}>
            {t("CouponCode")}
-            <Text style={styles.title}>{t("@(optional)")}</Text>
+            <Text style={styles.title}>{t("Optional")}</Text>
           </Text>
 
           <TextInput

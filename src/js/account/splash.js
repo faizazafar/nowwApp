@@ -44,7 +44,7 @@ export default function Splash() {
   };
 
   const updateLocationToServer = async (latitude, longitude) => {
-    dispatch(setLoading(true));
+    // dispatch(setLoading(true));
     let deviceId = getUniqueId().replace(/-/g, "");
 
     let payload = {
@@ -63,7 +63,7 @@ export default function Splash() {
     //   JSON.stringify(payload),
     // );
 
-    dispatch(setLoading(false));
+    // dispatch(setLoading(false));
 
     if (!response.status) {
       Alert.alert("updateLocationToServer", response.message);

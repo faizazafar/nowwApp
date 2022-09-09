@@ -42,7 +42,7 @@ export default function StepSix(props) {
           style={styles.input}
           onChangeText={onChange}
           value={offer.url}
-          placeholder={t("@URL(optional)")}
+          placeholder={t("URL(optional)")}
           placeholderTextColor={'#ccc'}
         />
         <StepsBar currentStep={6} style={styles.bar} />
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     paddingLeft: wp(10),
     fontSize: i18n.language == 'en' ? fs(16) : fs(20),
     // textAlign: 'right'
-    textAlign : i18n.language == 'en' ? "left" : "right",
+    // textAlign : i18n.language == 'en' ? "right" : "left",
   },
   body: {
     flex: 1,
@@ -103,7 +103,8 @@ const styles = StyleSheet.create({
     color: Colors.WHITE,
     fontSize: fs(26),
     fontFamily: 'Roboto-Bold',
-    textAlign: i18n.language == 'en' ? "left" : "right",
+        // textAlign : i18n.language == 'ar' ? "left" : "left",
+
 
   },
   title: {
