@@ -257,7 +257,7 @@ export default function TargetZone(props) {
                 sliderLength={SLIDER_WIDTH}
                 onValuesChange={setRadius}
                 min={0}
-                max={600}
+                max={200}
                 selectedStyle={{
                   backgroundColor: "rgb(228, 45, 72)",
                 }}
