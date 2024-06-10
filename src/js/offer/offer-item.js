@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,30 +7,30 @@ import {
   Image,
   Dimensions,
   Alert,
-} from 'react-native';
+} from "react-native";
 
 import {
   responsiveWidth as wp,
   responsiveHeight as hp,
   responsiveFontSize as fs,
-} from '../libs/responsive';
-import Colors from '../settings/colors';
-import OptionButton from './option-button';
-import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
-import {setLoading} from '../../redux/actions';
-import Service from '../libs/api/service';
-import { useTranslation } from 'react-i18next';
+} from "../libs/responsive";
+import Colors from "../settings/colors";
+import OptionButton from "./option-button";
+import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading } from "../../redux/actions";
+import Service from "../libs/api/service";
+import { useTranslation } from "react-i18next";
 
-const DEVICE_WIDTH = Dimensions.get('window').width;
+const DEVICE_WIDTH = Dimensions.get("window").width;
 
 export default function OfferItem(props) {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const backImage = 'https://i.stack.imgur.com/y9DpT.jpg';
+  const backImage = "https://i.stack.imgur.com/y9DpT.jpg";
   const [isFav, setFav] = useState(false);
-  const user = useSelector(state => state.user);
+  const user = useSelector((state) => state.user);
 
   const options = () => {
     if (props.options) {
@@ -40,20 +40,20 @@ export default function OfferItem(props) {
             <OptionButton
               onPress={props.refresh}
               txt={t("Process")}
-              source={require('../../assets/refresh.png')}
+              source={require("../../assets/refresh.png")}
             />
           )}
           {props.edit && (
             <OptionButton
               onPress={props.edit}
-              source={require('../../assets/pen.png')}
-              style={{marginLeft: wp(10)}}
+              source={require("../../assets/pen.png")}
+              style={{ marginLeft: wp(10) }}
             />
           )}
           {props.delete && (
             <OptionButton
-              source={require('../../assets/delete.png')}
-              style={{marginLeft: wp(10)}}
+              source={require("../../assets/delete.png")}
+              style={{ marginLeft: wp(10) }}
               onPress={props.delete}
             />
           )}
@@ -64,8 +64,8 @@ export default function OfferItem(props) {
         <View style={styles.optionsView}>
           <OptionButton
             onPress={onFavButtonPress}
-            iconStyle={{tintColor: isFav ? Colors.RED : '#fff'}}
-            source={require('../../assets/fav.png')}
+            iconStyle={{ tintColor: isFav ? Colors.RED : "#fff" }}
+            source={require("../../assets/fav.png")}
             style={{
               backgroundColor: Colors.BACKGROUND,
             }}
@@ -81,14 +81,14 @@ export default function OfferItem(props) {
     let form = {
       id: user.id,
       //offerId: props.offer.id,
-      offerId: '6120530e9bb46',
-      action: isFav ? 'unmark' : 'mark',
+      offerId: "6120530e9bb46",
+      action: isFav ? "unmark" : "mark",
     };
 
     let s = new Service();
     let response = await s.makeFavorite(form);
     dispatch(setLoading(false));
-    ////console.log('test82 makeFavorite: ', JSON.stringify(response));
+    // console.log("test82 makeFavorite: ", JSON.stringify(response));
     if (response.status) {
       setFav(isFav ? false : true);
     } else {
@@ -111,19 +111,18 @@ export default function OfferItem(props) {
     }
   };
 
-  let image = props.offer.image != '' ? props.offer.image : backImage;
+  let image = props.offer.image != "" ? props.offer.image : backImage;
   let brandName =
-    props?.offer?.brand.trim() != '' ? props.offer.brand : 'BRAND NAME';
+    props?.offer?.brand.trim() != "" ? props.offer.brand : "BRAND NAME";
   let productName =
-    props.offer.productName.trim() != ''
+    props.offer.productName.trim() != ""
       ? props.offer.productName
-      : 'PRODUCT NAME';
+      : "PRODUCT NAME";
   // let deal =
   //   props?.offer?.offerDeal.trim() != '' ? props?.offer?.offerDeal : 'OFFER/DEAL';
 
-  let deal = 'OFFER/DEAL';
-  if(props.offer && props.offer.offerDeal) 
-  {
+  let deal = "OFFER/DEAL";
+  if (props.offer && props.offer.offerDeal) {
     deal = props.offer.offerDeal;
   }
 
@@ -137,9 +136,10 @@ export default function OfferItem(props) {
       disabled={props.disable}
       activeOpacity={0.7}
       onPress={() => {
-        navigation.navigate('OfferDetails', {offerId: props.offer.id});
+        navigation.navigate("OfferDetails", { offerId: props.offer.id });
       }}
-      style={[itemStyle, props.style]}>
+      style={[itemStyle, props.style]}
+    >
       <Image
         style={styles.image}
         source={{
@@ -147,17 +147,17 @@ export default function OfferItem(props) {
         }}
       />
       {options()}
-      <View style={[styles.infoView, {top, bottom}]}>
+      <View style={[styles.infoView, { top, bottom }]}>
         <View style={styles.row}>
-          <View style={[styles.brandView, {height: valueBoxheight}]}>
+          <View style={[styles.brandView, { height: valueBoxheight }]}>
             <Text style={styles.txt}>{brandName}</Text>
           </View>
         </View>
         <View style={styles.bottomRow}>
-          <View style={[styles.productView, {height: valueBoxheight}]}>
+          <View style={[styles.productView, { height: valueBoxheight }]}>
             <Text style={styles.txt}>{productName}</Text>
           </View>
-          <View style={[styles.productView, {height: valueBoxheight}]}>
+          <View style={[styles.productView, { height: valueBoxheight }]}>
             <Text style={styles.txt}>{deal}</Text>
           </View>
         </View>
@@ -168,60 +168,60 @@ export default function OfferItem(props) {
 
 const styles = StyleSheet.create({
   image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
   iconContainer: {
     width: hp(30),
     height: hp(30),
     backgroundColor: Colors.THEME,
     borderRadius: hp(15),
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   icon: {
     width: hp(20),
     height: hp(20),
-    resizeMode: 'contain',
-    tintColor: '#fff',
+    resizeMode: "contain",
+    tintColor: "#fff",
   },
   row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   bottomRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   optionsView: {
-    position: 'absolute',
+    position: "absolute",
     top: hp(10),
     right: wp(20),
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   brandView: {
-    justifyContent: 'center',
-    backgroundColor: 'rgb(229, 150, 58)',
+    justifyContent: "center",
+    backgroundColor: "rgb(229, 150, 58)",
     paddingLeft: wp(5),
     paddingRight: wp(5),
   },
   productView: {
-    justifyContent: 'center',
-    backgroundColor: 'rgb(235, 69, 88)',
+    justifyContent: "center",
+    backgroundColor: "rgb(235, 69, 88)",
     paddingLeft: wp(5),
     paddingRight: wp(5),
   },
   txt: {
-    color: '#fff',
+    color: "#fff",
     fontSize: fs(14),
-    fontFamily: 'Roboto-Medium',
+    fontFamily: "Roboto-Medium",
   },
   infoView: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
 });

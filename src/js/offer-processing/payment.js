@@ -41,6 +41,7 @@ export default function Payment(props) {
     ////console.log('test82 getPaymentModes: ', JSON.stringify(response));
     dispatch(setLoading(false));
     if (response.status) {
+      console.log(response.data.paymentModes, 'response.data.paymentModes')
       setPaymentMethods(response.data.paymentModes);
     } else {
       Alert.alert(response.message);

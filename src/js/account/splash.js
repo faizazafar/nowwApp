@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -7,21 +7,21 @@ import {
   StatusBar,
   LogBox,
   AsyncStorage,
-} from 'react-native';
+} from "react-native";
 
 import {
   responsiveWidth as wp,
   responsiveHeight as hp,
   responsiveFontSize as fs,
-} from '../libs/responsive';
+} from "../libs/responsive";
 
-import Colors from '../settings/colors';
-import {useNavigation} from '@react-navigation/native';
-import Gradient from '../common/components/gradient';
-import {useDispatch} from 'react-redux';
-import {setUser} from '../../redux/actions';
+import Colors from "../settings/colors";
+import { useNavigation } from "@react-navigation/native";
+import Gradient from "../common/components/gradient";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/actions";
 import Gps from "../libs/gps";
-import { setLoading,setCurrentLocation } from "../../redux/actions";
+import { setLoading, setCurrentLocation } from "../../redux/actions";
 
 export default function Splash() {
   const navigation = useNavigation();
@@ -32,7 +32,7 @@ export default function Splash() {
     try {
       let gps = new Gps();
       gps.getCoordinates(async (isError, value) => {
-        console.log("val", value)
+        console.log("val", value);
         if (!isError == true) {
           dispatch(setCurrentLocation(value));
           await updateLocationToServer(value.lat, value.lng);
@@ -71,27 +71,27 @@ export default function Splash() {
   };
 
   useEffect(() => {
-    getLocation()
+    getLocation();
     LogBox.ignoreAllLogs();
-    if (Platform.OS == 'android') {
+    if (Platform.OS == "android") {
       StatusBar.setBackgroundColor(Colors.THEME);
     }
 
     setTimeout(async () => {
-      let userData = await AsyncStorage.getItem('user');
+      let userData = await AsyncStorage.getItem("user");
       let user = JSON.parse(userData);
       if (user) {
         dispatch(setUser(user));
       }
 
-      navigation.navigate('Slides');
+      navigation.navigate("Login");
     }, 1000);
   }, []);
 
   return (
     <View style={styles.container}>
       <Gradient />
-      <Image style={styles.logo} source={require('../../assets/now.png')} />
+      <Image style={styles.logo} source={require("../../assets/now.png")} />
     </View>
   );
 }
@@ -99,13 +99,13 @@ export default function Splash() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: Colors.THEME,
   },
   logo: {
-    width: '100%',
+    width: "100%",
     height: hp(80),
-    resizeMode: 'contain',
+    resizeMode: "contain",
   },
 });

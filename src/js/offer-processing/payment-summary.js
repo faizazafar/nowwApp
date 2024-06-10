@@ -115,7 +115,7 @@ export default function PaymentSumary(props) {
     dispatch(setLoading(true));
     let s = new Service();
     let response = await s.getPaymentModes();
-    ////console.log('test82 getPaymentModes: ', JSON.stringify(response));
+    console.log("test82 getPaymentModes: ", JSON.stringify(response));
     dispatch(setLoading(false));
     if (response.status) {
       setPaymentMethods(response.data.paymentModes);
@@ -173,14 +173,14 @@ export default function PaymentSumary(props) {
   };
 
   const onNext = () => {
-    // onPaymentDone();
-      // paypal.current.openModal();
-    if (data) {
-      Alert.alert("Please pay your balance first");
-    } else {
-      onPaymentDone();
-      paypal.current.openModal();
-    }
+    onPaymentDone();
+    // paypal.current.openModal();
+    // if (data) {
+    //   Alert.alert("Please pay your balance first");
+    // } else {
+    //   onPaymentDone();
+    //   paypal.current.openModal();
+    // }
   };
 
   const publishOffer = async () => {
@@ -221,7 +221,7 @@ export default function PaymentSumary(props) {
           <ZRSwitch
             active={checkIndex == item.id}
             style={styles.checkBox}
-            txt={item.id === '1' ? 'Credit Card / Debit Card' : 'Paypal'}
+            txt={item.id === "1" ? "Credit Card / Debit Card" : "Paypal"}
             textStyle={styles.detailsTxt}
             iconSrc={require("../../assets/blank-check-box.png")}
             iconStyle={styles.tickIcon}

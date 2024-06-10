@@ -1,10 +1,13 @@
 'use strict';
 
 const BASE_URL =
-// 'http://newoffersweb.com/backend/index.php?key=lkash2987kjb2h99j'
-'http://newoffersweb.com/backend/index.php?key=lkash2987kjb2h99j&';
-  // 'https://clients.devaj.technology/sandbox/now-app/index.php?key=lkash2987kjb2h99j&';
+  // 'http://newoffersweb.com/backend/index.php?key=lkash2987kjb2h99j'
+  // 'http://newoffersweb.com/backend/index.php?key=lkash2987kjb2h99j&';
   // 'http://3.22.231.86/sandbox/now-app/index.php?key=lkash2987kjb2h99j&';
+  // 'https://clients.devaj.technology/sandbox/now-app/index.php?key=lkash2987kjb2h99j&';
+
+  'http://3.22.118.96/backend/index.php?key=lkash2987kjb2h99j&'
+
 
 const encodePayload = data => {
   try {
@@ -17,7 +20,7 @@ const encodePayload = data => {
 };
 
 export default class FetchHandler {
-  constructor() {}
+  constructor() { }
 
   async callPost(apiName, payload) {
     let url = BASE_URL + 'r=' + apiName + '&key' + 'lkash2987kjb2h99j';
@@ -68,8 +71,8 @@ export default class FetchHandler {
           error: error.toString(),
         };
       });
-    
-      //console.log("r",r);
+
+    //console.log("r",r);
     return r;
   }
 

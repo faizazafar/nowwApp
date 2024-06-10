@@ -57,7 +57,7 @@ export default function Login() {
       let s = new Service();
       let response = await s.login(payload);
       dispatch(setLoading(false));
-      ////console.log('test82 onEmailLogin: ', JSON.stringify(response));
+      console.log('test82 onEmailLogin: ', JSON.stringify(response));
       if (response.status) {
         await AsyncStorage.setItem('user', JSON.stringify(response.data));
         dispatch(setUser(response.data));

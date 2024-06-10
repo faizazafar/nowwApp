@@ -1,36 +1,36 @@
-import * as React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
 import {
   createStackNavigator,
   CardStyleInterpolators,
-} from '@react-navigation/stack';
-import Splash from './src/js/account/splash';
-import Login from './src/js/account/login';
-import Slides from './src/js/account/slides';
-import Home from './src/js/home';
-import SideMenu from './src/js/side-menu';
-import StepOne from './src/js/post/steps/step-one';
-import StepTwo from './src/js/post/steps/step-two';
-import StepThree from './src/js/post/steps/step-three';
-import StepFour from './src/js/post/steps/step-four';
-import StepFive from './src/js/post/steps/step-five';
-import StepSix from './src/js/post/steps/step-six';
-import StepSeven from './src/js/post/steps/step-seven';
-import StepEight from './src/js/post/steps/step-eight';
-import OfferDetails from './src/js/offer/offer-details';
-import TargetZone from './src/js/offer-processing/target-zone';
-import AgeGender from './src/js/offer-processing/age-gender';
-import Interest from './src/js/offer-processing/interest';
-import OtherInfo from './src/js/offer-processing/other-info';
-import Summary from './src/js/offer-processing/summary';
-import Notification from './src/js/offer-processing/notification';
-import PaymentSumary from './src/js/offer-processing/payment-summary';
-import ScheduleOffer from './src/js/offer-processing/schedule-offer';
-import SignUp from './src/js/account/sign-up';
-import ForgotPassword from './src/js/account/forgot-password';
-import Otp from './src/js/account/otp';
-import Loader from './src/js/common/components/loader';
-import Payment from './src/js/offer-processing/payment';
+} from "@react-navigation/stack";
+import Splash from "./src/js/account/splash";
+import Login from "./src/js/account/login";
+import Slides from "./src/js/account/slides";
+import Home from "./src/js/home";
+import SideMenu from "./src/js/side-menu";
+import StepOne from "./src/js/post/steps/step-one";
+import StepTwo from "./src/js/post/steps/step-two";
+import StepThree from "./src/js/post/steps/step-three";
+import StepFour from "./src/js/post/steps/step-four";
+import StepFive from "./src/js/post/steps/step-five";
+import StepSix from "./src/js/post/steps/step-six";
+import StepSeven from "./src/js/post/steps/step-seven";
+import StepEight from "./src/js/post/steps/step-eight";
+import OfferDetails from "./src/js/offer/offer-details";
+import TargetZone from "./src/js/offer-processing/target-zone";
+import AgeGender from "./src/js/offer-processing/age-gender";
+import Interest from "./src/js/offer-processing/interest";
+import OtherInfo from "./src/js/offer-processing/other-info";
+import Summary from "./src/js/offer-processing/summary";
+import Notification from "./src/js/offer-processing/notification";
+import PaymentSumary from "./src/js/offer-processing/payment-summary";
+import ScheduleOffer from "./src/js/offer-processing/schedule-offer";
+import SignUp from "./src/js/account/sign-up";
+import ForgotPassword from "./src/js/account/forgot-password";
+import Otp from "./src/js/account/otp";
+import Loader from "./src/js/common/components/loader";
+import Payment from "./src/js/offer-processing/payment";
 
 const Stack = createStackNavigator();
 
@@ -41,7 +41,9 @@ const MyStack = () => {
         headerMode="none"
         screenOptions={{
           cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-        }} initialRouteName={Home}>
+        }}
+        initialRouteName={Home}
+      >
         <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Slides" component={Slides} />
         <Stack.Screen name="Login" component={Login} />
