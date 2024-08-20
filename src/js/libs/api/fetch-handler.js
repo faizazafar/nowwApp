@@ -1,42 +1,45 @@
-'use strict';
+"use strict";
 
 const BASE_URL =
   // 'http://newoffersweb.com/backend/index.php?key=lkash2987kjb2h99j'
   // 'http://newoffersweb.com/backend/index.php?key=lkash2987kjb2h99j&';
   // 'http://3.22.231.86/sandbox/now-app/index.php?key=lkash2987kjb2h99j&';
-  // 'https://clients.devaj.technology/sandbox/now-app/index.php?key=lkash2987kjb2h99j&';
+  "https://clients.devaj.technology/sandbox/now-app/index.php?key=lkash2987kjb2h99j&";
+// "https://clients.devaj.technology/sandbox/now-app/index.php?key=lkash2987kjb2h99j&r=api/login&key=lkash2987kjb2h99j%26"
 
-  'http://3.22.118.96/backend/index.php?key=lkash2987kjb2h99j&'
+// 'http://3.22.118.96/backend/index.php?key=lkash2987kjb2h99j&'
 
-
-const encodePayload = data => {
+const encodePayload = (data) => {
   try {
     return Object.keys(data)
-      .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
-      .join('&');
+      .map(
+        (key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key])
+      )
+      .join("&");
   } catch (e) {
     return {};
   }
 };
 
 export default class FetchHandler {
-  constructor() { }
+  constructor() {}
 
   async callPost(apiName, payload) {
-    let url = BASE_URL + 'r=' + apiName + '&key' + 'lkash2987kjb2h99j';
+    let url = BASE_URL + "r=" + apiName + "&key" + "lkash2987kjb2h99j";
+    console.log(url, "URL");
     let r = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded',
+        Accept: "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       body: encodePayload(payload),
     })
-      .then(async response => {
+      .then(async (response) => {
         let json = await response.json();
         return json;
       })
-      .catch(error => {
+      .catch((error) => {
         return {
           error: error.toString(),
         };
@@ -47,26 +50,26 @@ export default class FetchHandler {
 
   async callPostMultipart(apiName, payload) {
     //console.log("In callPostMultipart");
-    let url = BASE_URL + 'r=' + apiName + '&key=' + 'lkash2987kjb2h99j';
+    let url = BASE_URL + "r=" + apiName + "&key=" + "lkash2987kjb2h99j";
     // let url = BASE_URL + 'r=' + apiName; //+ '&key=' + 'lkash2987kjb2h99j';
     //console.log("URL: " + url);
 
     let r = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Accept: 'application/json',
+        Accept: "application/json",
         // 'Content-type': 'application/x-www-form-urlencoded',
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
       body: payload,
     })
-      .then(async response => {
+      .then(async (response) => {
         //console.log("Response from API:");
         //console.log(response);
         let json = await response.json();
         return json;
       })
-      .catch(error => {
+      .catch((error) => {
         return {
           error: error.toString(),
         };
@@ -77,13 +80,13 @@ export default class FetchHandler {
   }
 
   makeParameters(form) {
-    let params = '?';
+    let params = "?";
     let keys = Object.keys(form);
     keys.forEach((key, index) => {
       if (index == keys.length - 1) {
-        params += key + '=' + form[key];
+        params += key + "=" + form[key];
       } else {
-        params += key + '=' + form[key] + '&';
+        params += key + "=" + form[key] + "&";
       }
     });
 
@@ -95,11 +98,11 @@ export default class FetchHandler {
     let url = BASE_URL + params;
 
     let rtn = await fetch(url)
-      .then(async response => {
+      .then(async (response) => {
         let json = await response.json();
         return json;
       })
-      .catch(error => {
+      .catch((error) => {
         return {
           error: error.toString(),
         };
@@ -110,11 +113,11 @@ export default class FetchHandler {
 
   async callGetFromUrl(url) {
     let r = await fetch(url)
-      .then(async response => {
+      .then(async (response) => {
         let json = await response.json();
         return json;
       })
-      .catch(error => {
+      .catch((error) => {
         return {
           status: false,
           message: error.toString(),
