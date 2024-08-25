@@ -238,7 +238,7 @@ export default function TargetZone(props) {
               onChangeText={(address) => {
                 onAddressStrChange(address);
               }}
-              placeholder={t("Search for aaddress")}
+              placeholder={t("Search for address")}
               value={addressStr}
             />
           </View>

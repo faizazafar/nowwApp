@@ -1,5 +1,5 @@
-import React, {useRef} from 'react';
-import { useEffect , useState } from 'react';
+import React, { useRef } from "react";
+import { useEffect, useState } from "react";
 
 import {
   StyleSheet,
@@ -8,43 +8,43 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
-} from 'react-native';
+} from "react-native";
 
 import {
   responsiveWidth as wp,
   responsiveHeight as hp,
   responsiveFontSize as fs,
-} from '../../libs/responsive';
+} from "../../libs/responsive";
 
-import Colors from '../../settings/colors';
-import {useNavigation} from '@react-navigation/native';
-import Header from '../../common/components/header';
-import StepsBar from '../components/steps-bar';
-import MediaButton from '../../common/components/media-button';
-import LocationMarker from '../../libs/maps/location-marker';
-import ZRAddressAutoInput from '../../common/form/zr-address-auto-input';
-import {useSelector, useDispatch} from 'react-redux';
-import {setOffer} from '../../../redux/actions';
-import { useTranslation } from 'react-i18next';
-import i18n from 'i18next';
-import Geolocation from 'react-native-geolocation-service';
-import Gps from '../../libs/gps'
+import Colors from "../../settings/colors";
+import { useNavigation } from "@react-navigation/native";
+import Header from "../../common/components/header";
+import StepsBar from "../components/steps-bar";
+import MediaButton from "../../common/components/media-button";
+import LocationMarker from "../../libs/maps/location-marker";
+import ZRAddressAutoInput from "../../common/form/zr-address-auto-input";
+import { useSelector, useDispatch } from "react-redux";
+import { setOffer } from "../../../redux/actions";
+import { useTranslation } from "react-i18next";
+import i18n from "i18next";
+import Geolocation from "react-native-geolocation-service";
+import Gps from "../../libs/gps";
 
-const DEVICE_WIDTH = Dimensions.get('window').width;
+const DEVICE_WIDTH = Dimensions.get("window").width;
 
 export default function StepFive(props) {
-  const { t} = useTranslation();
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
   const [locations, onLocationAdd] = React.useState([{}, {}]);
   const [activeLocation, onActive] = React.useState(0);
-  const [addressStr, onAddressStrChange] = React.useState('');
+  const [addressStr, onAddressStrChange] = React.useState("");
   const [location, setLocation] = useState(undefined);
-  const curr_location = useSelector(state => state.curr_location);
-  const offer = useSelector(state => state.offer);
+  const curr_location = useSelector((state) => state.curr_location);
+  const offer = useSelector((state) => state.offer);
 
-console.log("step five current loc", curr_location)
+  console.log("step five current loc", curr_location);
   // useEffect(() => {
   //   Geolocation.getCurrentPosition(
   //     position => {
@@ -74,7 +74,7 @@ console.log("step five current loc", curr_location)
     onActive(locations.length - 2);
   };
 
-  const onLocationPress = position => {
+  const onLocationPress = (position) => {
     if (!locations[activeLocation].latitude) {
       let mapData = mapView.current.getData();
       locations[activeLocation] = mapData;
@@ -103,16 +103,17 @@ console.log("step five current loc", curr_location)
             key={index}
             activeOpacity={0.5}
             onPress={onAdd}
-            style={[styles.addBtn, {marginLeft}]}>
+            style={[styles.addBtn, { marginLeft }]}
+          >
             <Text style={styles.addBtnTxt}>{t("AddMore")}</Text>
             <Image
-              source={require('../../../assets/plus.png')}
+              source={require("../../../assets/plus.png")}
               style={styles.icon}
             />
           </TouchableOpacity>
         );
       } else {
-        backgroundColor = activeLocation == index ? '#4a89f3' : '#ccc';
+        backgroundColor = activeLocation == index ? "#4a89f3" : "#ccc";
         return (
           <TouchableOpacity
             key={index}
@@ -120,8 +121,11 @@ console.log("step five current loc", curr_location)
               onLocationPress(index);
             }}
             activeOpacity={0.5}
-            style={[styles.locationButton, {marginLeft, backgroundColor}]}>
-            <Text style={styles.btnTxt}>{t("Location")} #{index + 1}</Text>
+            style={[styles.locationButton, { marginLeft, backgroundColor }]}
+          >
+            <Text style={styles.btnTxt}>
+              {t("Location")} #{index + 1}
+            </Text>
           </TouchableOpacity>
         );
       }
@@ -130,13 +134,13 @@ console.log("step five current loc", curr_location)
     return <View style={styles.buttonsView}>{btns}</View>;
   };
 
-  const onAddressSelect = address => {
+  const onAddressSelect = (address) => {
     ////console.log('test82 address: ', JSON.stringify(address));
     if (address) {
       onAddressStrChange(address.description);
       mapView.current.updateMarkerLocation(address.location);
     } else {
-      onAddressStrChange('');
+      onAddressStrChange("");
     }
   };
 
@@ -154,14 +158,14 @@ console.log("step five current loc", curr_location)
           lng: item.longitude,
         };
 
-        console.log("koct",locationItem)
+        console.log("koct", locationItem);
         locationsToSend.push(locationItem);
       }
     });
 
     updatedOffer.locations = locationsToSend;
     dispatch(setOffer(updatedOffer));
-    navigation.navigate('StepSix');
+    navigation.navigate("StepSix");
   };
 
   return (
@@ -170,24 +174,26 @@ console.log("step five current loc", curr_location)
 
       <View style={styles.body}>
         <Text style={styles.heading}>{t("Location")}</Text>
-        <Text style={styles.title}>{t("Please assign the showroom/office")}</Text>
+        <Text style={styles.title}>
+          {t("Please assign the showroom/office")}
+        </Text>
 
         <View style={styles.mapView}>
           <LocationMarker
             ref={mapView}
-            latlng={{lat: curr_location.lat, lng: curr_location.lng}}
-            pointerSrc={require('../../../assets/google-maps.png')}
+            latlng={{ lat: curr_location.lat, lng: curr_location.lng }}
+            pointerSrc={require("../../../assets/google-maps.png")}
           />
           <View style={styles.autoInputContainer}>
             <ZRAddressAutoInput
               style={styles.textInput}
-              onSelect={address => {
+              onSelect={(address) => {
                 onAddressSelect(address);
               }}
-              onChangeText={address => {
+              onChangeText={(address) => {
                 onAddressStrChange(address);
               }}
-              placeholder={t("Search for aaddress")}
+              placeholder={t("Search for address")}
               value={addressStr}
             />
           </View>
@@ -201,7 +207,7 @@ console.log("step five current loc", curr_location)
           <MediaButton
             txt={t("@NEXT")}
             style={{
-              backgroundColor: 'rgb(228, 45, 72)',
+              backgroundColor: "rgb(228, 45, 72)",
               marginTop: hp(20),
               marginBottom: hp(20),
             }}
@@ -220,10 +226,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.THEME,
   },
   autoInputContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: hp(-50),
-    width: '90%',
-    alignSelf: 'center',
+    width: "90%",
+    alignSelf: "center",
   },
   mapView: {
     marginTop: hp(60),
@@ -232,57 +238,57 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     paddingLeft: wp(15),
-    fontFamily: 'Roboto-Regular',
-    fontSize: i18n.language == 'en' ? fs(16) : fs(20),
-    fontWeight: '500',
-    color: '#fff',
+    fontFamily: "Roboto-Regular",
+    fontSize: i18n.language == "en" ? fs(16) : fs(20),
+    fontWeight: "500",
+    color: "#fff",
     height: hp(40),
   },
   icon: {
     marginLeft: wp(10),
     width: hp(8),
     height: hp(8),
-    resizeMode: 'contain',
-    tintColor: 'rgb(228, 45, 72)',
+    resizeMode: "contain",
+    tintColor: "rgb(228, 45, 72)",
   },
   btnTxt: {
     color: Colors.WHITE,
-    fontFamily: 'Roboto-Medium',
+    fontFamily: "Roboto-Medium",
     fontSize: fs(14),
-    textAlign: 'center',
+    textAlign: "center",
   },
   addBtnTxt: {
-    color: 'rgb(228, 45, 72)',
-    fontFamily: 'Roboto-Medium',
+    color: "rgb(228, 45, 72)",
+    fontFamily: "Roboto-Medium",
     fontSize: fs(13),
-    textAlign: 'center',
+    textAlign: "center",
   },
   addBtn: {
     marginTop: hp(7),
     width: ((DEVICE_WIDTH * 90) / 100 - wp(20)) / 3,
     height: hp(26),
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: hp(2),
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   locationButton: {
     marginTop: hp(7),
     width: ((DEVICE_WIDTH * 90) / 100 - wp(20)) / 3,
     height: hp(26),
-    backgroundColor: '#4a89f3',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#4a89f3",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: hp(2),
   },
   buttonsView: {
     marginTop: hp(10),
-    width: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    flexWrap: 'wrap',
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    flexWrap: "wrap",
   },
 
   offerView: {
@@ -291,9 +297,9 @@ const styles = StyleSheet.create({
   },
   image: {
     marginTop: hp(20),
-    width: '100%',
+    width: "100%",
     height: hp(250),
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   bar: {
     marginTop: hp(20),
@@ -303,38 +309,38 @@ const styles = StyleSheet.create({
     marginTop: hp(7),
     height: hp(40),
     borderWidth: 1,
-    borderColor: '#fff',
-    color: '#fff',
+    borderColor: "#fff",
+    color: "#fff",
     paddingLeft: wp(10),
   },
   body: {
     flex: 1,
-    width: '100%',
-    alignSelf: 'center',
+    width: "100%",
+    alignSelf: "center",
   },
   lowerBody: {
-    width: '90%',
-    alignSelf: 'center',
+    width: "90%",
+    alignSelf: "center",
   },
   stepTxt: {
     color: Colors.WHITE,
     fontSize: fs(14),
-    fontFamily: 'Roboto-Regular',
+    fontFamily: "Roboto-Regular",
   },
   heading: {
-    marginLeft: '5%',
+    marginLeft: "5%",
     marginTop: hp(12),
     color: Colors.WHITE,
     marginRight: hp(5),
     fontSize: fs(26),
-    fontFamily: 'Roboto-Bold',
+    fontFamily: "Roboto-Bold",
   },
   title: {
-    marginLeft: '5%',
+    marginLeft: "5%",
     marginTop: hp(5),
     marginRight: hp(5),
     color: Colors.WHITE,
-    fontSize: i18n.language == 'en' ? fs(16) : fs(20),
-    fontFamily: 'Roboto-Regular',
+    fontSize: i18n.language == "en" ? fs(16) : fs(20),
+    fontFamily: "Roboto-Regular",
   },
 });
