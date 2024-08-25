@@ -37,9 +37,8 @@ export default function Home() {
   const curr_location = useSelector((state) => state.curr_location);
   console.log("curr_location:::::::", curr_location);
 
-
   const loadData = async () => {
-    console.log("curr_location:::::::", curr_location);
+    console.log("curr_location::::::: load Data", curr_location);
     dispatch(setLoading(true));
     let s = new Service();
     let response = await s.getHomeOffers(curr_location);
@@ -56,14 +55,14 @@ export default function Home() {
 
       setOffers(offers);
     } else {
-      Alert.alert(response.message);
+      // Alert.alert(response.message);
     }
   };
 
-  useEffect( async () => {
+  useEffect(async () => {
     {
-        await checkUser();
-        await loadData();
+      await checkUser();
+      await loadData();
       // async () => {
       //   await getLocation();
       //   await checkUser();
@@ -120,7 +119,7 @@ export default function Home() {
       dispatch(setLoading(true));
       let deviceId = getUniqueId().replace(/-/g, "");
 
-      let time = parseInt((new Date().getTime() / 1000).toFixed(0))
+      let time = parseInt((new Date().getTime() / 1000).toFixed(0));
 
       // console.log("time",time)
       // let email = deviceId + 'dwsa11@nowuser.com';
@@ -136,19 +135,19 @@ export default function Home() {
       };
       let s = new Service();
       let response = await s.signup(payload);
-      //console.log('test82 signup:', JSON.stringify(response));
+      console.log("test82 signup:", JSON.stringify(response));
       dispatch(setLoading(false));
 
       if (response.status) {
-        console.log(response.message)
+        console.log(response.message);
 
-        Alert.alert(response.message);
+        // Alert.alert(response.message);
 
         await AsyncStorage.setItem("user", JSON.stringify(response.data));
         dispatch(setUser(response.data));
       } else {
-        console.log(response.message)
-        Alert.alert(response.message);
+        console.log(response, "here");
+        // Alert.alert(response.message);
       }
     }
   };

@@ -85,7 +85,7 @@ export default class Gps {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          // console.log("COORDINATES", coordinates);
+          console.log("position", position);
           onDone(false, coordinates);
           // dispatch(setCurrentLocation(coordinates));
           // this.updateLocationToServer(coordinates.lat, coordinates.lng);

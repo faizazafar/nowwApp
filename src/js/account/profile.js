@@ -1,63 +1,63 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text, Alert, AsyncStorage} from 'react-native';
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, Text, Alert, AsyncStorage } from "react-native";
 
 import {
   responsiveWidth as wp,
   responsiveHeight as hp,
   responsiveFontSize as fs,
-} from '../libs/responsive';
+} from "../libs/responsive";
 
-import Colors from '../settings/colors';
-import {useNavigation} from '@react-navigation/native';
-import MediaButton from '../common/components/media-button';
-import ZRTextInput from '../common/form/zr-text-input';
-import Validator from '../libs/api/validator';
-import Service from '../libs/api/service';
-import {useDispatch, useSelector} from 'react-redux';
-import {setLoading, setUser} from '../../redux/actions';
-import Header from '../common/components/header';
-import { useTranslation } from 'react-i18next';
+import Colors from "../settings/colors";
+import { useNavigation } from "@react-navigation/native";
+import MediaButton from "../common/components/media-button";
+import ZRTextInput from "../common/form/zr-text-input";
+import Validator from "../libs/api/validator";
+import Service from "../libs/api/service";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoading, setUser } from "../../redux/actions";
+import Header from "../common/components/header";
+import { useTranslation } from "react-i18next";
 export default function Profile() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   let inputRefs = [];
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const user = useSelector(state => state.user);
+  const user = useSelector((state) => state.user);
 
-  const [firstname, onfFirstNameInput] = React.useState('');
-  const [lastname, onLastNameInput] = React.useState('');
-  const [email, onEmailInput] = React.useState('');
-  const [mobile, onMobileInput] = React.useState('');
+  const [firstname, onfFirstNameInput] = React.useState("");
+  const [lastname, onLastNameInput] = React.useState("");
+  const [email, onEmailInput] = React.useState("");
+  const [mobile, onMobileInput] = React.useState("");
 
   useEffect(() => {
     if (user) {
       onfFirstNameInput(user.firstname);
       onLastNameInput(user.lastname);
       onEmailInput(user.email);
-      onMobileInput(user.mobile);
+      onMobileInput(user.mobile ?? "");
     }
-  });
+  }, [user]);
 
-  onSave = async () => {
+  const onSave = async () => {
     let validator = new Validator();
     let isValid = validator.validateInputs(inputRefs);
 
     if (isValid) {
       dispatch(setLoading(true));
       let payload = new FormData();
-      payload.append('id', user.id);
-      payload.append('firstname', firstname);
-      payload.append('lastname', lastname);
-      payload.append('email', email);
-      payload.append('mobile', mobile);
+      payload.append("id", user.id);
+      payload.append("firstname", firstname);
+      payload.append("lastname", lastname);
+      payload.append("email", email);
+      payload.append("mobile", mobile);
 
       let s = new Service();
       let response = await s.updateUser(payload);
       dispatch(setLoading(false));
-      ////console.log('test82 updateUser: ', JSON.stringify(response));
+      console.log("test82 updateUser: ", JSON.stringify(response));
 
       if (response.status) {
-        await AsyncStorage.setItem('user', JSON.stringify(response.data));
+        await AsyncStorage.setItem("user", JSON.stringify(response.data));
         dispatch(setUser(response.data));
         navigation.goBack();
       } else {
@@ -67,7 +67,7 @@ export default function Profile() {
   };
 
   gotoLogin = () => {
-    navigation.navigate('Login');
+    navigation.navigate("Login");
   };
 
   return (
@@ -78,13 +78,13 @@ export default function Profile() {
 
         <View style={styles.inputs}>
           <ZRTextInput
-            ref={ref => {
+            ref={(ref) => {
               inputRefs[0] = ref;
             }}
             style={styles.textInput}
             onChangeText={onfFirstNameInput}
             placeholder={t("First Name")}
-            placeholderTextColor={'#ccc'}
+            placeholderTextColor={"#ccc"}
             value={firstname}
             validation={[
               {
@@ -95,13 +95,13 @@ export default function Profile() {
           />
 
           <ZRTextInput
-            ref={ref => {
+            ref={(ref) => {
               inputRefs[1] = ref;
             }}
             style={styles.textInput}
             onChangeText={onLastNameInput}
             placeholder={t("Last Name")}
-            placeholderTextColor={'#ccc'}
+            placeholderTextColor={"#ccc"}
             value={lastname}
             validation={[
               {
@@ -111,13 +111,13 @@ export default function Profile() {
             ]}
           />
           <ZRTextInput
-            ref={ref => {
+            ref={(ref) => {
               inputRefs[2] = ref;
             }}
             style={styles.textInput}
             onChangeText={onEmailInput}
             placeholder={t("@Email")}
-            placeholderTextColor={'#ccc'}
+            placeholderTextColor={"#ccc"}
             value={email}
             validation={[
               {
@@ -131,13 +131,13 @@ export default function Profile() {
             ]}
           />
           <ZRTextInput
-            ref={ref => {
+            ref={(ref) => {
               inputRefs[3] = ref;
             }}
             style={styles.textInput}
             onChangeText={onMobileInput}
             placeholder={t("@MobileNumber")}
-            placeholderTextColor={'#ccc'}
+            placeholderTextColor={"#ccc"}
             value={mobile}
             validation={[
               {
@@ -150,7 +150,7 @@ export default function Profile() {
 
         <MediaButton
           txt={t("@Save")}
-          style={{backgroundColor: 'rgb(228, 45, 72)', marginTop: hp(50)}}
+          style={{ backgroundColor: "rgb(228, 45, 72)", marginTop: hp(50) }}
           simple
           onPress={onSave}
         />
@@ -166,8 +166,8 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    width: '86%',
-    alignSelf: 'center',
+    width: "86%",
+    alignSelf: "center",
   },
   inputs: {
     marginTop: hp(10),
@@ -179,37 +179,37 @@ const styles = StyleSheet.create({
     marginTop: hp(20),
     color: Colors.WHITE,
     fontSize: fs(34),
-    fontFamily: 'Roboto-Medium',
+    fontFamily: "Roboto-Medium",
   },
   subHeading: {
     marginTop: hp(5),
     color: Colors.WHITE,
     fontSize: fs(18),
-    fontFamily: 'Roboto-Regular',
+    fontFamily: "Roboto-Regular",
   },
   forgotStr: {
     marginTop: hp(20),
     color: Colors.WHITE,
     fontSize: fs(14),
-    fontFamily: 'Roboto-Medium',
-    textAlign: 'center',
+    fontFamily: "Roboto-Medium",
+    textAlign: "center",
   },
   signupStr: {
     paddingTop: hp(10),
     paddingBottom: hp(20),
     color: Colors.WHITE,
     fontSize: fs(17),
-    fontFamily: 'Roboto-Medium',
-    textAlign: 'center',
+    fontFamily: "Roboto-Medium",
+    textAlign: "center",
   },
   textInput: {
     marginTop: hp(10),
-    width: '100%',
-    color: '#ccc',
-    height: Platform.OS === 'ios' ? hp(42) : hp(44),
+    width: "100%",
+    color: "#ccc",
+    height: Platform.OS === "ios" ? hp(42) : hp(44),
     fontSize: fs(18),
     borderBottomWidth: 1,
     borderColor: Colors.BORDER,
-    fontFamily: 'Roboto-Medium',
+    fontFamily: "Roboto-Medium",
   },
 });

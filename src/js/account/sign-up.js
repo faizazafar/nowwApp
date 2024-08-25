@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -6,39 +6,39 @@ import {
   TouchableOpacity,
   Alert,
   AsyncStorage,
-} from 'react-native';
+} from "react-native";
 
 import {
   responsiveWidth as wp,
   responsiveHeight as hp,
   responsiveFontSize as fs,
-} from '../libs/responsive';
+} from "../libs/responsive";
 
-import Colors from '../settings/colors';
-import {useNavigation} from '@react-navigation/native';
-import MediaButton from '../common/components/media-button';
-import ZRTextInput from '../common/form/zr-text-input';
-import ZRPasswordInput from '../common/form/zr-password-input';
-import Validator from '../libs/api/validator';
-import Service from '../libs/api/service';
-import {useDispatch} from 'react-redux';
-import {setLoading, setUser} from '../../redux/actions';
-import FacebookLogin from './social-media/facebook-login';
-import GmailLogin from './social-media/gmail-login';
-import Header from '../common/components/header';
-import { useTranslation } from 'react-i18next';
+import Colors from "../settings/colors";
+import { useNavigation } from "@react-navigation/native";
+import MediaButton from "../common/components/media-button";
+import ZRTextInput from "../common/form/zr-text-input";
+import ZRPasswordInput from "../common/form/zr-password-input";
+import Validator from "../libs/api/validator";
+import Service from "../libs/api/service";
+import { useDispatch } from "react-redux";
+import { setLoading, setUser } from "../../redux/actions";
+import FacebookLogin from "./social-media/facebook-login";
+import GmailLogin from "./social-media/gmail-login";
+import Header from "../common/components/header";
+import { useTranslation } from "react-i18next";
 
 export default function SignUp() {
   let inputRefs = [];
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
-  const [firstname, onfFirstNameInput] = React.useState('');
-  const [lastname, onLastNameInput] = React.useState('');
-  const [email, onEmailInput] = React.useState('');
-  const [mobile, onMobileInput] = React.useState('');
-  const [password, onPasswordInput] = React.useState('');
+  const [firstname, onfFirstNameInput] = React.useState("");
+  const [lastname, onLastNameInput] = React.useState("");
+  const [email, onEmailInput] = React.useState("");
+  const [mobile, onMobileInput] = React.useState("");
+  const [password, onPasswordInput] = React.useState("");
 
   const onRegister = async () => {
     let validator = new Validator();
@@ -46,16 +46,16 @@ export default function SignUp() {
 
     if (isValid) {
       dispatch(setLoading(true));
-      let payload = {firstname, lastname, email, mobile, password};
+      let payload = { firstname, lastname, email, mobile, password };
       let s = new Service();
       let response = await s.signup(payload);
       dispatch(setLoading(false));
-      //console.log('test82 onRegister: ', JSON.stringify(response));
+      console.log("test82 onRegister: ", JSON.stringify(response));
 
       if (response.status) {
-        await AsyncStorage.setItem('user', JSON.stringify(response.data));
+        await AsyncStorage.setItem("user", JSON.stringify(response.data));
         dispatch(setUser(response.data));
-        navigation.navigate('SideMenu');
+        navigation.navigate("SideMenu");
       } else {
         Alert.alert(response.message);
       }
@@ -63,25 +63,58 @@ export default function SignUp() {
   };
 
   const gotoLogin = () => {
-    navigation.navigate('Login');
+    navigation.navigate("Login");
+  };
+  const socialLogin = async (data) => {
+    var payload = new FormData();
+    Object.keys(data).forEach((key) => {
+      payload.append(key, data[key]);
+    });
+
+    dispatch(setLoading(true));
+    let s = new Service();
+    let response = await s.loginSocial(payload);
+    dispatch(setLoading(false));
+    //console.log('test82 onEmailLogin: ', JSON.stringify(response));
+    if (response.status) {
+      await AsyncStorage.setItem("user", JSON.stringify(response.data));
+      dispatch(setUser(response.data));
+      navigation.navigate("SideMenu");
+    } else {
+      Alert.alert(response.message);
+    }
+  };
+
+  const onFacebookLogin = () => {
+    let facebookLogin = new FacebookLogin();
+    facebookLogin.signIn((payload) => {
+      socialLogin(payload);
+    });
+  };
+
+  const onGoogleLogin = () => {
+    let gmailLogin = new GmailLogin();
+    gmailLogin.signIn((payload) => {
+      socialLogin(payload);
+    });
   };
 
   return (
     <View style={styles.container}>
       <Header logo back />
       <View style={styles.body}>
-        <Text style={styles.heading}>{t('Welcome')}</Text>
-        <Text style={styles.subHeading}>{t('Create an account')}</Text>
+        <Text style={styles.heading}>{t("Welcome")}</Text>
+        <Text style={styles.subHeading}>{t("Create an account")}</Text>
 
         <View style={styles.inputs}>
           <ZRTextInput
-            ref={ref => {
+            ref={(ref) => {
               inputRefs[0] = ref;
             }}
             style={styles.textInput}
             onChangeText={onfFirstNameInput}
-            placeholder={t('First Name')}
-            placeholderTextColor={'#ccc'}
+            placeholder={t("First Name")}
+            placeholderTextColor={"#ccc"}
             value={firstname}
             validation={[
               {
@@ -92,13 +125,13 @@ export default function SignUp() {
           />
 
           <ZRTextInput
-            ref={ref => {
+            ref={(ref) => {
               inputRefs[1] = ref;
             }}
             style={styles.textInput}
             onChangeText={onLastNameInput}
             placeholder={t("Last Name")}
-            placeholderTextColor={'#ccc'}
+            placeholderTextColor={"#ccc"}
             value={lastname}
             validation={[
               {
@@ -108,13 +141,13 @@ export default function SignUp() {
             ]}
           />
           <ZRTextInput
-            ref={ref => {
+            ref={(ref) => {
               inputRefs[2] = ref;
             }}
             style={styles.textInput}
             onChangeText={onEmailInput}
-            placeholder={t('Email')}
-            placeholderTextColor={'#ccc'}
+            placeholder={t("Email")}
+            placeholderTextColor={"#ccc"}
             value={email}
             validation={[
               {
@@ -128,13 +161,13 @@ export default function SignUp() {
             ]}
           />
           <ZRTextInput
-            ref={ref => {
+            ref={(ref) => {
               inputRefs[3] = ref;
             }}
             style={styles.textInput}
             onChangeText={onMobileInput}
-            placeholder={t('Mobile Number')}
-            placeholderTextColor={'#ccc'}
+            placeholder={t("Mobile Number")}
+            placeholderTextColor={"#ccc"}
             value={mobile}
             validation={[
               {
@@ -144,13 +177,13 @@ export default function SignUp() {
             ]}
           />
           <ZRPasswordInput
-            ref={ref => {
+            ref={(ref) => {
               inputRefs[4] = ref;
             }}
             style={styles.textInput}
             onChangeText={onPasswordInput}
-            placeholder={t('Password')}
-            placeholderTextColor={'#ccc'}
+            placeholder={t("Password")}
+            placeholderTextColor={"#ccc"}
             value={password}
             validation={[
               {
@@ -163,8 +196,8 @@ export default function SignUp() {
 
         <View style={styles.buttons}>
           <MediaButton
-            txt={t('SIGN UP')}
-            style={{backgroundColor: 'rgb(228, 45, 72)'}}
+            txt={t("SIGN UP")}
+            style={{ backgroundColor: "rgb(228, 45, 72)" }}
             simple
             onPress={() => {
               onRegister();
@@ -172,23 +205,25 @@ export default function SignUp() {
           />
 
           <MediaButton
-            txt={t('Connect With Facebook')}
-            style={{backgroundColor: '#3b5998'}}
-            onPress={FacebookLogin}
-            icon={require('../../assets/facebook.png')}
+            txt={t("Connect With Facebook")}
+            style={{ backgroundColor: "#3b5998" }}
+            onPress={onFacebookLogin}
+            icon={require("../../assets/facebook.png")}
           />
 
           <MediaButton
-            txt={t('Connect With Gmail')}
-            style={{backgroundColor: 'rgb(219, 76, 63)'}}
-            onPress={GmailLogin}
-            icon={require('../../assets/g-plus.png')}
+            txt={t("Connect With Gmail")}
+            style={{ backgroundColor: "rgb(219, 76, 63)" }}
+            onPress={onGoogleLogin}
+            icon={require("../../assets/g-plus.png")}
           />
         </View>
       </View>
 
       <TouchableOpacity onPress={gotoLogin}>
-        <Text style={styles.signupStr}>{t("Already have an account? SIGN IN")}</Text>
+        <Text style={styles.signupStr}>
+          {t("Already have an account? SIGN IN")}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -201,8 +236,8 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    width: '86%',
-    alignSelf: 'center',
+    width: "86%",
+    alignSelf: "center",
   },
   inputs: {
     marginTop: hp(10),
@@ -214,37 +249,37 @@ const styles = StyleSheet.create({
     marginTop: hp(10),
     color: Colors.WHITE,
     fontSize: fs(38),
-    fontFamily: 'Roboto-Medium',
+    fontFamily: "Roboto-Medium",
   },
   subHeading: {
     marginTop: hp(5),
     color: Colors.WHITE,
     fontSize: fs(18),
-    fontFamily: 'Roboto-Regular',
+    fontFamily: "Roboto-Regular",
   },
   forgotStr: {
     marginTop: hp(20),
     color: Colors.WHITE,
     fontSize: fs(14),
-    fontFamily: 'Roboto-Medium',
-    textAlign: 'center',
+    fontFamily: "Roboto-Medium",
+    textAlign: "center",
   },
   signupStr: {
     paddingTop: hp(10),
     paddingBottom: hp(20),
     color: Colors.WHITE,
     fontSize: fs(17),
-    fontFamily: 'Roboto-Medium',
-    textAlign: 'center',
+    fontFamily: "Roboto-Medium",
+    textAlign: "center",
   },
   textInput: {
     marginTop: hp(10),
-    width: '100%',
-    color: '#ccc',
-    height: Platform.OS === 'ios' ? hp(42) : hp(44),
+    width: "100%",
+    color: "#ccc",
+    height: Platform.OS === "ios" ? hp(42) : hp(44),
     fontSize: fs(18),
     borderBottomWidth: 1,
     borderColor: Colors.BORDER,
-    fontFamily: 'Roboto-Medium',
+    fontFamily: "Roboto-Medium",
   },
 });

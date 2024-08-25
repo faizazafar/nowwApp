@@ -23,7 +23,10 @@
   "@URL(optional)":"URL(optional)",
   "@@PleaseentertheURL":"Please enter the URL",
   "Other":"Other",
-  "Published":"Published"
+  "Published":"Published",
+  "@MobileNumber":"MobileNumber",
+  "@Save":"save"
+  
 
 
 

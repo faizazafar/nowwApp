@@ -32,8 +32,8 @@ export default function Splash() {
     try {
       let gps = new Gps();
       gps.getCoordinates(async (isError, value) => {
-        console.log("val", value);
         if (!isError == true) {
+          console.log(value, "valueee");
           dispatch(setCurrentLocation(value));
           await updateLocationToServer(value.lat, value.lng);
         } else {
@@ -84,7 +84,7 @@ export default function Splash() {
         dispatch(setUser(user));
       }
 
-      navigation.navigate("Login");
+      navigation.navigate("Slides");
     }, 1000);
   }, []);
 

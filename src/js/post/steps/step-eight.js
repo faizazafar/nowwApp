@@ -99,14 +99,14 @@ export default function StepEight(props) {
     payload.append("phone", offer.phoneNumber);
     // payload.append('offerLocations', offer.locations);
 
-    console.log("offer", offer);
+    console.log("payload", payload);
 
     dispatch(setLoading(true));
     let s = new Service();
     let response = await s.saveToDraft(payload);
 
     dispatch(setLoading(false));
-    ////console.log("status",response.status)
+    console.log("status", response);
 
     if (response.status) {
       //console.log('test82 response: ', JSON.stringify(response));
@@ -117,7 +117,7 @@ export default function StepEight(props) {
       return response.data.offers[0];
     } else {
       console.log(response.status);
-      Alert.alert("hi", response.message);
+      Alert.alert(response.error);
       return null;
     }
   };
@@ -131,9 +131,12 @@ export default function StepEight(props) {
 
   const onProcessNow = async () => {
     let newOffer = await saveOfferToDraft();
-    if (newOffer != null)
+    console.log(newOffer, "new offer");
+    if (newOffer != null) {
       navigation.navigate("TargetZone", { offer: newOffer });
-    console.log(newOffer);
+    }
+
+    // console.log(newOffer);
   };
 
   return (
