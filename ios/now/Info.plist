@@ -33,16 +33,16 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.460997966297-cs1mdmvi1rr3gn722ujnabpmh7jft7sq</string>
+				<string>com.googleusercontent.apps.581630834308-45iud9b8tddf0mn1208sudqhdh391fu0</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
-	<string>324400712492904</string>
+	<string>536198832416986</string>
 	<key>FacebookClientToken</key>
-	<string>d1d11f6a05dec1a73bcb850ca46a4ac7</string>
+	<string>27e759023a4efbd17de2b23faf0f44db</string>
 	<key>FacebookDisplayName</key>
 	<string>NOW</string>
 	<key>LSRequiresIPhoneOS</key>

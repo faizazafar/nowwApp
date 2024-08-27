@@ -1,9 +1,9 @@
-import {Alert, Platform} from 'react-native';
+import { Alert, Platform } from "react-native";
 
 import {
   GoogleSignin,
   statusCodes,
-} from '@react-native-google-signin/google-signin';
+} from "@react-native-google-signin/google-signin";
 
 export default class GmailLogin {
   //"user":{"photo":"https://lh3.googleusercontent.com/a-/AAuE7mBQQkDXyICCrNGRWYwLSJ3iRP_vo7z4e1ErYvMO=s120",
@@ -19,7 +19,7 @@ export default class GmailLogin {
       let user = userInfo.user;
       ////console.log('test32 gmail object: ', JSON.stringify(user));
       let form = {
-        social_source: 'google',
+        social_source: "google",
         social_id: user.id,
         firstname: user.givenName,
         lastname: user.familyName,
@@ -32,12 +32,12 @@ export default class GmailLogin {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         //Alert.alert(JSON.stringify('Login Cancelled'));
       } else if (error.code === statusCodes.IN_PROGRESS) {
-        Alert.alert(JSON.stringify('Signin is in progress already'));
+        Alert.alert(JSON.stringify("Signin is in progress already"));
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        Alert.alert(JSON.stringify('Play services not available or outdated'));
+        Alert.alert(JSON.stringify("Play services not available or outdated"));
       } else {
         ////console.log('test32 gmail error: ', JSON.stringify(error));
-        Alert.alert('Some error occured.', JSON.stringify(error));
+        Alert.alert("Some error occured.", JSON.stringify(error));
       }
     }
   }
@@ -59,11 +59,14 @@ export default class GmailLogin {
 
   configure() {
     //It is mandatory to call this method before attempting to call signIn()
-    Platform.OS == 'ios'
+    Platform.OS == "ios"
       ? GoogleSignin.configure({
           iosClientId:
-            '460997966297-cs1mdmvi1rr3gn722ujnabpmh7jft7sq.apps.googleusercontent.com',
+            "581630834308-45iud9b8tddf0mn1208sudqhdh391fu0.apps.googleusercontent.com",
         })
-      : GoogleSignin.configure();
+      : GoogleSignin.configure({
+          webClientId:
+            "581630834308-6g291vm3efm9a4mdga9gp30i5cuhreuf.apps.googleusercontent.com",
+        });
   }
 }
