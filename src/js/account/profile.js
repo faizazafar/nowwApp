@@ -72,7 +72,7 @@ export default function Profile() {
 
   return (
     <View style={styles.container}>
-      <Header menu border logo />
+      <Header menu border logo noRefresh />
       <View style={styles.body}>
         <Text style={styles.heading}>{t("Profile")}</Text>
 

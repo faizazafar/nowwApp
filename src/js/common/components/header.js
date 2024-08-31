@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Platform,
   Button,
+  I18nManager,
 } from "react-native";
 import i18n from "i18next";
 
@@ -24,6 +25,12 @@ import { useState, useEffect, useRef } from "react";
 import ModalDropdown from "react-native-modal-dropdown";
 import { useDispatch } from "react-redux";
 import { setLanguage } from "../../../redux/actions";
+// import RNRestart from "react-native-restart"; // Import package from node modules
+
+export function forceRTL(isRTL = false) {
+  I18nManager.allowRTL(isRTL);
+  I18nManager.forceRTL(isRTL);
+}
 
 export default function Header(props) {
   const navigation = useNavigation();
@@ -92,7 +99,7 @@ export default function Header(props) {
   }
 
   function _renderRight() {
-    let { search, audience } = props;
+    let { search, audience, noRefresh } = props;
 
     if (search) {
       return (
@@ -108,9 +115,13 @@ export default function Header(props) {
               if (index == 0) {
                 dispatch(setLanguage("en"));
                 i18n.changeLanguage("en");
+                forceRTL(false);
+                // RNRestart.restart();
+                // NavigationService.reset('GetStarted');
               } else if (index == 1) {
                 i18n.changeLanguage("ar");
                 dispatch(setLanguage("ar"));
+                forceRTL(true);
               }
               setLanguages(option);
             }}
@@ -151,19 +162,27 @@ export default function Header(props) {
           <Text style={styles.count}>{audienceData.all}</Text>
         </View>
       );
+    } else if (noRefresh) {
+      return <View style={{ flex: 1 }}></View>;
     } else {
       return (
-        <View style={styles.iconContainer}>
-          {/* <TouchableOpacity
+        <View style={styles.iconContainer2}>
+          <TouchableOpacity
             onPress={() => {
-              navigation.reset();
+              navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: "Home" }],
+                })
+              );
+              navigation.navigate("Home"); // Manually navigate after reset
             }}
           >
             <Image
               style={styles.icon}
               source={require("../../../assets/refresh.png")}
             />
-          </TouchableOpacity> */}
+          </TouchableOpacity>
         </View>
       );
     }
@@ -172,13 +191,27 @@ export default function Header(props) {
   function _renderMiddle() {
     let { title, logo } = props;
     if (title) {
-      return <Text style={styles.title}>{title}</Text>;
+      return (
+        <View
+          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+        >
+          <Text style={styles.title}>{title}</Text>
+        </View>
+      );
     } else if (logo) {
       return (
-        <Image
-          style={styles.logo}
-          source={require("../../../assets/now.png")}
-        />
+        <View
+          style={{
+            alignItems: "flex-end",
+            // justifyContent: "flex-start",
+            flex: 1,
+          }}
+        >
+          <Image
+            style={styles.logo}
+            source={require("../../../assets/now.png")}
+          />
+        </View>
       );
     } else {
       return <View style={styles.iconContainer} />;
@@ -217,7 +250,7 @@ const styles = StyleSheet.create({
   audienceContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginRight: wp(20),
+    marginHorizontal: wp(50),
   },
   cartContainer: {
     flexDirection: "row",
@@ -312,6 +345,13 @@ const styles = StyleSheet.create({
     marginLeft: wp(7),
     width: hp(50),
     height: hp(50),
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  iconContainer2: {
+    marginLeft: wp(30),
+    width: hp(90),
+    height: hp(90),
     justifyContent: "flex-end",
     alignItems: "center",
   },

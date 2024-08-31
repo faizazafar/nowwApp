@@ -144,7 +144,7 @@ export default function MyInterests(props) {
 
   return (
     <View style={styles.container}>
-      <Header menu logo border transparent />
+      <Header menu logo border transparent noRefresh />
       <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
         <View style={styles.body}>
           <Text style={styles.heading}>{t("My Interests")}</Text>

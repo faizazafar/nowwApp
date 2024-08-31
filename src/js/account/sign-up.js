@@ -101,7 +101,7 @@ export default function SignUp() {
 
   return (
     <View style={styles.container}>
-      <Header logo back />
+      <Header logo back noRefresh />
       <View style={styles.body}>
         <Text style={styles.heading}>{t("Welcome")}</Text>
         <Text style={styles.subHeading}>{t("Create an account")}</Text>

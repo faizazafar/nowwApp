@@ -36,6 +36,7 @@ import i18n from "i18next";
 export default function PaymentSumary(props) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const lang = useSelector((state) => state.language);
 
   const data = [
     {
@@ -206,7 +207,8 @@ export default function PaymentSumary(props) {
     );
     dispatch(setLoading(false));
     if (response.status) {
-      navigation.navigate(t("Published"));
+      navigation.navigate("Published");
+      console.log("Navigating to: ", t("Published"));
     } else {
       console.log(response.message);
       Alert.alert(response.message);
@@ -304,7 +306,12 @@ export default function PaymentSumary(props) {
             placeholderTextColor={"#ccc"}
           />
 
-          <View style={styles.highlightedRow}>
+          <View
+            style={[
+              styles.highlightedRow,
+              { flexDirection: lang === "en" ? "row" : "row-reverse" },
+            ]}
+          >
             <View style={{ flex: 1 }}>
               <Text style={styles.highlightedRowKey}>{t("TOTAL AMOUNT")}</Text>
             </View>
@@ -475,7 +482,7 @@ const styles = StyleSheet.create({
   },
   highlightedRow: {
     marginTop: hp(30),
-    flexDirection: i18n.language == "en" ? "row" : "row-reverse",
+    // flexDirection: i18n.language == "en" ? "row" : "row-reverse",
     paddingTop: hp(12),
     paddingBottom: hp(12),
   },
