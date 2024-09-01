@@ -1,5 +1,4 @@
-import * as React from "react";
-
+import React, { useEffect, useState, useRef } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,25 +6,23 @@ import {
   Image,
   TouchableOpacity,
   Platform,
-  Button,
   I18nManager,
 } from "react-native";
-import i18n from "i18next";
-
+import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import ModalDropdown from "react-native-modal-dropdown";
+import { EventRegister } from "react-native-event-listeners";
+import { setLanguage } from "../../../redux/actions";
+import Colors from "../../settings/colors";
 import {
   responsiveWidth as wp,
   responsiveHeight as hp,
   responsiveFontSize as fs,
 } from "../../libs/responsive";
-
-import Colors from "../../settings/colors";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
-import { useState, useEffect, useRef } from "react";
-import ModalDropdown from "react-native-modal-dropdown";
-import { useDispatch } from "react-redux";
-import { setLanguage } from "../../../redux/actions";
-// import RNRestart from "react-native-restart"; // Import package from node modules
+
+import RNRestart from "react-native-restart"; // Import package from node modules
+import i18n from "../../../i18/i18n.config";
 
 export function forceRTL(isRTL = false) {
   I18nManager.allowRTL(isRTL);
@@ -33,39 +30,57 @@ export function forceRTL(isRTL = false) {
 }
 
 export default function Header(props) {
-  const navigation = useNavigation();
-  console.log(props, "navigationnnnnn");
-
-  const [state, setstate] = useState("");
-  const [language, setLanguages] = useState("");
-  const audienceData = useSelector((state) => state.audience);
-  const dropDownref = useRef(null);
+  const { t } = useTranslation();
+  const language = useSelector((state) => state.language); // Access language from Redux state
   const dispatch = useDispatch();
+  console.log(language, "language");
+  console.log(i18n.language, "i18n.language");
 
-  const omModalPress = () => {
-    console.log("hello");
-    dropDownref.current.show();
-    console.log(language);
+  const navigation = useNavigation();
+  const dropDownref = useRef(null);
+
+  const handleLanguageChange = (index, option) => {
+    const newLanguage = index === 0 ? "en" : "ar";
+    EventRegister.emit("changeLanguageGlobal", newLanguage);
   };
 
-  function onBackPress() {
-    let { onBackPress } = props;
+  useEffect(() => {
+    const listener = EventRegister.addEventListener(
+      "changeLanguageGlobal",
+      (language) => {
+        i18n
+          .changeLanguage(language)
+          .then(() => {
+            console.log("Language changed", language);
 
-    if (onBackPress) {
-      onBackPress();
-    } else {
-      navigation.goBack();
-    }
-  }
+            // Update RTL settings
+            forceRTL(language === "ar");
+
+            // Update Redux state
+            dispatch(
+              setLanguage(language, () => {
+                RNRestart.Restart();
+              })
+            );
+          })
+          .catch(() => {
+            console.log("Error changing language");
+          });
+      }
+    );
+
+    return () => {
+      EventRegister.removeEventListener(listener);
+    };
+  }, [dispatch]);
+
   function _renderLeft() {
     let { back, menu } = props;
     if (back) {
       return (
         <TouchableOpacity
           style={styles.iconContainer}
-          onPress={() => {
-            onBackPress();
-          }}
+          onPress={() => navigation.goBack()}
         >
           <Image
             style={styles.icon}
@@ -78,14 +93,7 @@ export default function Header(props) {
       return (
         <TouchableOpacity
           style={styles.iconContainer}
-          onPress={() => {
-            if (navigation.canGoBack()) {
-              console.log("can go back");
-              navigation.openDrawer();
-            } else {
-              console.log("Drawer navigation not available.");
-            }
-          }}
+          onPress={() => navigation.openDrawer()}
         >
           <Image
             style={styles.menuIcon}
@@ -93,9 +101,8 @@ export default function Header(props) {
           />
         </TouchableOpacity>
       );
-    } else {
-      return <View style={styles.iconContainer} />;
     }
+    return <View style={styles.iconContainer} />;
   }
 
   function _renderRight() {
@@ -105,51 +112,14 @@ export default function Header(props) {
       return (
         <View style={styles.cartContainer}>
           <ModalDropdown
-            onPress={() => console.log("yaya")}
+            onPress={() => console.log("Dropdown opened")}
             ref={dropDownref}
             dropdownTextStyle={styles.dropdownTextStyle}
-            defaultValue={"Select Language"}
+            defaultValue={t("Select Language")}
             textStyle={styles.boxText}
-            onSelect={(index, option) => {
-              console.log("select");
-              if (index == 0) {
-                dispatch(setLanguage("en"));
-                i18n.changeLanguage("en");
-                forceRTL(false);
-                // RNRestart.restart();
-                // NavigationService.reset('GetStarted');
-              } else if (index == 1) {
-                i18n.changeLanguage("ar");
-                dispatch(setLanguage("ar"));
-                forceRTL(true);
-              }
-              setLanguages(option);
-            }}
-            options={["EN", "AR"]}
+            onSelect={handleLanguageChange}
+            options={[t("EN"), t("AR")]}
           />
-
-          {console.log(language)}
-
-          {/* <TouchableOpacity
-          onPress={()=> i18n.changeLanguage('en')}
-          activeOpacity={0.5}
-          style={{ flexDirection:"row"}}
-          // style={styles.cartContainer}
-          >
-          <Image
-            style={styles.serachIcon}
-            source={require('../../../assets/search.png')}
-          />
-          <Text style={styles.count}>EN</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity
-        onPress={()=> i18n.changeLanguage('ar')}
-        activeOpacity={0.5}
-        // style={styles.cartContainer}
-        >
-        <Text style={styles.count}>AR</Text>
-      </TouchableOpacity> */}
         </View>
       );
     } else if (audience) {
@@ -159,11 +129,11 @@ export default function Header(props) {
             style={[styles.serachIcon, { tintColor: "#fff" }]}
             source={require("../../../assets/user.png")}
           />
-          <Text style={styles.count}>{audienceData.all}</Text>
+          <Text style={styles.count}>{props.audienceData.all}</Text>
         </View>
       );
     } else if (noRefresh) {
-      return <View style={{ flex: 1 }}></View>;
+      return <View style={{ flex: 1 }} />;
     } else {
       return (
         <View style={styles.iconContainer2}>
@@ -175,7 +145,7 @@ export default function Header(props) {
                   routes: [{ name: "Home" }],
                 })
               );
-              navigation.navigate("Home"); // Manually navigate after reset
+              navigation.navigate("Home");
             }}
           >
             <Image
@@ -203,7 +173,6 @@ export default function Header(props) {
         <View
           style={{
             alignItems: "flex-end",
-            // justifyContent: "flex-start",
             flex: 1,
           }}
         >
@@ -213,9 +182,8 @@ export default function Header(props) {
           />
         </View>
       );
-    } else {
-      return <View style={styles.iconContainer} />;
     }
+    return <View style={styles.iconContainer} />;
   }
 
   return (
@@ -264,31 +232,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.THEME_BLUE,
     justifyContent: "center",
   },
-  addressContainer: {},
-  dropIcon: {
-    marginLeft: wp(10),
-    width: hp(10),
-    height: hp(10),
-    resizeMode: "contain",
-    tintColor: Colors.THEME_BLUE,
-  },
-  addressTitle: {
-    color: Colors.BLACK_2,
-    fontSize: fs(15),
-    fontWeight: "600",
-  },
-  addressHeading: {
-    alignSelf: "center",
-    color: Colors.THEME_BLUE,
-    fontSize: fs(11),
-    fontWeight: "600",
-    letterSpacing: 0.5,
-  },
-  addressRow: {
-    marginTop: 2,
-    flexDirection: "row",
-    alignItems: "center",
-  },
   title: {
     color: "#fff",
     fontSize: fs(17),
@@ -324,22 +267,10 @@ const styles = StyleSheet.create({
     tintColor: "#a6a6a6",
   },
   menuIcon: {
-    width: Platform.OS == "ios" ? hp(16) : hp(20),
-    height: Platform.OS == "ios" ? hp(16) : hp(20),
+    width: Platform.OS === "ios" ? hp(16) : hp(20),
+    height: Platform.OS === "ios" ? hp(16) : hp(20),
     resizeMode: "contain",
     tintColor: "#fff",
-  },
-  plusIcon: {
-    width: hp(14),
-    height: hp(14),
-    resizeMode: "contain",
-    tintColor: Colors.THEME_BLUE,
-  },
-  cartIcon: {
-    width: hp(12),
-    height: hp(12),
-    resizeMode: "contain",
-    tintColor: Colors.WHITE,
   },
   iconContainer: {
     marginLeft: wp(7),
@@ -355,25 +286,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center",
   },
-  rightIconContainer: {
-    marginRight: wp(7),
-    width: hp(50),
-    height: hp(50),
-    justifyContent: "flex-end",
-    alignItems: "center",
-    paddingBottom: hp(2),
-  },
-
-  // box: {
-  //   marginTop: hp(20),
-  //   height: hp(40),
-  //   borderWidth: 1,
-  //   // borderColor: '#fff',
-  //   color: '#fff',
-  //   paddingLeft: wp(10),
-  //   justifyContent: 'center',
-  // },
-
   boxText: {
     color: "#fff",
     fontSize: fs(16),
