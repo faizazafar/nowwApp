@@ -185,6 +185,7 @@ export default function PaymentSumary(props) {
         label: "Your Company Name",
         amount: "10.00", // Total amount
       },
+      merchantIdentifier: "merchant.com.now",
     },
     []
   );
