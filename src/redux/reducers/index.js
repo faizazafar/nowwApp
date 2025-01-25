@@ -6,7 +6,8 @@ import {
   AUDIENCE,
   DELETE_OFFER,
   CURRENT_LOCATION,
-  SET_LANGUAGE
+  SET_LANGUAGE,
+  CHANGE_LANG,
 } from "../actions/types";
 
 const initialState = {
@@ -28,9 +29,8 @@ const initialState = {
   audience: { all: 0, withInterest: 0, withoutInterest: 0 },
   // curr_location: {lat:
   //   24.9305975 , lng: 67.1005613},
-  curr_location: {lat:
-    0 , lng: 0},
-  language:'en'
+  curr_location: { lat: 0, lng: 0 },
+  language: "en",
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -75,9 +75,15 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         language: action.payload,
+        callback: action.callback,
       };
     //   type: CURRENT_LOCATION,
     // curr_location: curr_location,
+    case CHANGE_LANG:
+      return {
+        ...state,
+        language: action.payload,
+      };
     default:
       return state;
   }

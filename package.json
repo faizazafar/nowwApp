@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ptomasroos/react-native-multi-slider": "^2.2.2",
+    "@react-native-async-storage/async-storage": "^2.0.0",
     "@react-native-community/datetimepicker": "^3.5.2",
     "@react-native-community/geolocation": "^2.1.0",
     "@react-native-community/masked-view": "^0.1.10",
@@ -30,6 +31,7 @@
     "react-native-actionsheet": "^2.4.2",
     "react-native-date-picker": "^4.2.0",
     "react-native-device-info": "^8.3.0",
+    "react-native-event-listeners": "^1.0.7",
     "react-native-fbsdk-next": "^4.3.0",
     "react-native-geolocation-service": "^5.3.0-beta.1",
     "react-native-gesture-handler": "^1.10.3",
@@ -38,14 +40,18 @@
     "react-native-linear-gradient": "^2.5.6",
     "react-native-maps": "0.28.0",
     "react-native-modal-dropdown": "^1.0.1",
+    "react-native-payments": "^0.8.4",
     "react-native-reanimated": "^2.4.0",
+    "react-native-restart": "^0.0.24",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.25.0",
     "react-native-swiper": "^1.6.0",
     "react-native-tab-view": "^2.16.0",
     "react-native-vector-icons": "^8.1.0",
     "react-native-video": "^5.1.1",
-    "react-native-webview": "^11.13.0"
+    "react-native-webview": "^11.13.0",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.13.16",
@@ -57,7 +63,7 @@
     "metro-react-native-babel-preset": "^0.66.0",
     "react-redux": "^7.2.3",
     "react-test-renderer": "17.0.1",
-    "redux": "^4.0.5"
+    "redux": "^4.2.1"
   },
   "jest": {
     "preset": "react-native"

@@ -1,3 +1,4 @@
+import { I18nManager } from "react-native";
 import {
   OFFER,
   LOADING,
@@ -7,59 +8,70 @@ import {
   CURRENT_LOCATION,
   DELETE_OFFER,
   SET_LANGUAGE,
-} from './types';
+  CHANGE_LANG,
+} from "./types";
+import i18n from "../../i18/i18n.config";
+// import i18n from "i18next";
 
-export const setOffer = offer => {
+export const setOffer = (offer) => {
   return {
     type: OFFER,
     offer: offer,
   };
 };
 
-export const setLoading = loading => {
+export const setLoading = (loading) => {
   return {
     type: LOADING,
     loading: loading,
   };
 };
 
-export const setUser = user => {
+export const setUser = (user) => {
   return {
     type: USER,
     user: user,
   };
 };
 
-export const setMyOffers = myOffers => {
+export const setMyOffers = (myOffers) => {
   return {
     type: MY_OFFERS,
     myOffers: myOffers,
   };
 };
 
-export const setAudience = audience => {
+export const setAudience = (audience) => {
   return {
     type: AUDIENCE,
     audience: audience,
   };
 };
 
-export const setCurrentLocation = curr_location => {
+export const setCurrentLocation = (curr_location) => {
   return {
     type: CURRENT_LOCATION,
     curr_location: curr_location,
   };
 };
 
-export const setDeleteOffer = offer => {
+export const setDeleteOffer = (offer) => {
   return {
     type: DELETE_OFFER,
     payload: offer,
   };
-}
-export const setLanguage = language => {
-  return {
-    type: SET_LANGUAGE,
-    payload: language,
+};
+export const setLanguage = (language, callback) => {
+  return (dispatch) => {
+    // Dispatch the action
+    dispatch({
+      type: SET_LANGUAGE,
+      payload: language,
+    });
+
+    // Execute the callback function
+    if (callback && typeof callback === "function") {
+      callback();
+    }
   };
-}
+};

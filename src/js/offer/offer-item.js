@@ -25,6 +25,7 @@ import { useTranslation } from "react-i18next";
 const DEVICE_WIDTH = Dimensions.get("window").width;
 
 export default function OfferItem(props) {
+  console.log(props, "props");
   const { t } = useTranslation();
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -88,7 +89,7 @@ export default function OfferItem(props) {
     let s = new Service();
     let response = await s.makeFavorite(form);
     dispatch(setLoading(false));
-    // console.log("test82 makeFavorite: ", JSON.stringify(response));
+    console.log("test82 makeFavorite: ", JSON.stringify(response));
     if (response.status) {
       setFav(isFav ? false : true);
     } else {

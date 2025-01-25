@@ -57,7 +57,7 @@ export default function ScheduleOffer(props) {
 
     dispatch(setLoading(false));
     if (response.status) {
-      navigation.navigate(t("Scheduled"));
+      navigation.navigate("Scheduled");
     } else {
       Alert.alert(response.message);
     }

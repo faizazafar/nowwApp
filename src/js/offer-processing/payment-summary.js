@@ -10,6 +10,8 @@ import {
   Pressable,
   FlatList,
   Image,
+  Platform,
+  TouchableOpacity,
 } from "react-native";
 
 import {
@@ -32,10 +34,12 @@ import ZRSwitch from "../common/form/zr-switch";
 import Paypal from "./paypal";
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
+import { PaymentRequest } from "react-native-payments";
 
 export default function PaymentSumary(props) {
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  const lang = useSelector((state) => state.language);
 
   const data = [
     {
@@ -171,10 +175,23 @@ export default function PaymentSumary(props) {
 
     publishOffer();
   };
+  const applePayRequest = new PaymentRequest(
+    {
+      countryCode: "US", // Your country code
+      currencyCode: "USD", // Currency code for payment
+      supportedNetworks: ["visa", "mastercard", "amex"], // Supported card networks
+      merchantCapabilities: ["supports3DS"], // Merchant capabilities
+      total: {
+        label: "Your Company Name",
+        amount: "10.00", // Total amount
+      },
+    },
+    []
+  );
 
   const onNext = () => {
-    onPaymentDone();
-    // paypal.current.openModal();
+    // onPaymentDone();
+    paypal.current.openModal();
     // if (data) {
     //   Alert.alert("Please pay your balance first");
     // } else {
@@ -182,7 +199,26 @@ export default function PaymentSumary(props) {
     //   paypal.current.openModal();
     // }
   };
+  const onApplePay = async () => {
+    try {
+      // Check if Apple Pay is available
+      const canMakePayments = await applePayRequest.canMakePayments();
+      if (!canMakePayments) {
+        alert("Apple Pay is not available on this device.");
+        return;
+      }
 
+      // Show the Apple Pay payment sheet
+      const paymentResponse = await applePayRequest.show();
+      console.log("Payment successful:", paymentResponse);
+
+      // Complete the payment
+      paymentResponse.complete("success");
+    } catch (error) {
+      applePayRequest.abort();
+      console.error("Payment failed:", error);
+    }
+  };
   const publishOffer = async () => {
     var payload = new FormData();
     Object.keys(processOffer).forEach((key) => {
@@ -206,7 +242,8 @@ export default function PaymentSumary(props) {
     );
     dispatch(setLoading(false));
     if (response.status) {
-      navigation.navigate(t("Published"));
+      navigation.navigate("Published");
+      console.log("Navigating to: ", t("Published"));
     } else {
       console.log(response.message);
       Alert.alert(response.message);
@@ -304,7 +341,12 @@ export default function PaymentSumary(props) {
             placeholderTextColor={"#ccc"}
           />
 
-          <View style={styles.highlightedRow}>
+          <View
+            style={[
+              styles.highlightedRow,
+              { flexDirection: lang === "en" ? "row" : "row-reverse" },
+            ]}
+          >
             <View style={{ flex: 1 }}>
               <Text style={styles.highlightedRowKey}>{t("TOTAL AMOUNT")}</Text>
             </View>
@@ -312,14 +354,24 @@ export default function PaymentSumary(props) {
               <Text style={styles.highlightedRowValue}>1.00 $</Text>
             </View>
           </View>
-
-          <MediaButton
-            disabled={checkIndex != -1 ? false : true}
-            txt={t("CONTINUE")}
-            style={{ backgroundColor: "rgb(228, 45, 72)", marginTop: hp(0) }}
-            simple
-            onPress={onNext}
-          />
+          {Platform.OS == "ios" ? (
+            <TouchableOpacity
+              style={{ padding: 10, backgroundColor: "#cdcdcd" }}
+              onPress={() => {
+                onApplePay();
+              }}
+            >
+              <Text style={{ color: "black" }}>Apple Pay</Text>
+            </TouchableOpacity>
+          ) : (
+            <MediaButton
+              disabled={checkIndex != -1 ? false : true}
+              txt={t("CONTINUE")}
+              style={{ backgroundColor: "rgb(228, 45, 72)", marginTop: hp(0) }}
+              simple
+              onPress={onNext}
+            />
+          )}
         </View>
         <View style={styles.centeredView}>
           <Modal
@@ -475,7 +527,7 @@ const styles = StyleSheet.create({
   },
   highlightedRow: {
     marginTop: hp(30),
-    flexDirection: i18n.language == "en" ? "row" : "row-reverse",
+    // flexDirection: i18n.language == "en" ? "row" : "row-reverse",
     paddingTop: hp(12),
     paddingBottom: hp(12),
   },

@@ -111,7 +111,7 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <Header logo back />
+      <Header logo back noRefresh />
       <View style={styles.body}>
         <Text style={styles.heading}>{t("Welcome")}</Text>
         <Text style={styles.subHeading}>{t("Sign in to continue")}</Text>

@@ -192,12 +192,14 @@ export default function Home() {
         <View style={styles.body}>{renderOffers()}</View>
       </ScrollView>
 
-      <TouchableOpacity onPress={onAddOffer} style={styles.postBtn}>
-        <Image style={styles.icon} source={require("../../assets/post.png")} />
-      </TouchableOpacity>
-      {/* <TouchableOpacity onPress={()=> i18n.changeLanguage('ar')} style={styles.postBtn}>
-       <Text>hello</Text>
-     </TouchableOpacity> */}
+      {user && (
+        <TouchableOpacity onPress={onAddOffer} style={styles.postBtn}>
+          <Image
+            style={styles.icon}
+            source={require("../../assets/post.png")}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
