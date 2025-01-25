@@ -34,7 +34,7 @@ import ZRSwitch from "../common/form/zr-switch";
 import Paypal from "./paypal";
 import { useTranslation } from "react-i18next";
 import i18n from "i18next";
-import { PaymentRequest } from "react-native-payments";
+import { ApplePayButton, PaymentRequest } from "react-native-payments";
 
 export default function PaymentSumary(props) {
   const navigation = useNavigation();
@@ -277,6 +277,74 @@ export default function PaymentSumary(props) {
       console.error("Failed to construct PaymentRequest:", error.message);
     }
   };
+
+  const GooglePay = async () => {
+    const METHOD_DATA = [
+      {
+        supportedMethods: "https://google.com/pay",
+        data: {
+          environment: "TEST", // Use "PRODUCTION" in production
+          apiVersion: 2,
+          apiVersionMinor: 0,
+          merchantInfo: {
+            merchantId: "merchant.com.now", // Replace with your actual Google Pay Merchant ID
+            merchantName: "Your Merchant Name", // Display name shown to users
+          },
+          allowedPaymentMethods: [
+            {
+              type: "CARD",
+              parameters: {
+                allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+                allowedCardNetworks: ["VISA", "MASTERCARD", "AMEX"], // Supported networks
+              },
+              tokenizationSpecification: {
+                type: "PAYMENT_GATEWAY",
+                parameters: {
+                  gateway: "stripe", // Your gateway (e.g., stripe, braintree)
+                  gatewayMerchantId: "your-gateway-merchant-id", // Replace with your gateway-specific merchant ID
+                },
+              },
+            },
+          ],
+        },
+      },
+    ];
+
+    const DETAILS = {
+      id: "google-pay-example",
+      displayItems: [
+        {
+          label: "Movie Ticket",
+          amount: { currency: "USD", value: "15.00" },
+        },
+      ],
+      total: {
+        label: "Your Merchant Name", // Your business name
+        amount: { currency: "USD", value: "15.00" }, // Total price
+      },
+    };
+
+    const googlePayRequest = new PaymentRequest(METHOD_DATA, DETAILS);
+
+    try {
+      // Check if Google Pay is available
+      const canMakePayments = await googlePayRequest.canMakePayments();
+      if (!canMakePayments) {
+        alert("Google Pay is not available on this device.");
+        return;
+      }
+
+      // Show the Google Pay payment sheet
+      const paymentResponse = await googlePayRequest.show();
+      console.log("Payment successful:", paymentResponse);
+
+      // Complete the payment
+      paymentResponse.complete("success");
+    } catch (error) {
+      console.error("Payment failed:", error);
+      alert("Payment failed: " + error.message);
+    }
+  };
   const publishOffer = async () => {
     var payload = new FormData();
     Object.keys(processOffer).forEach((key) => {
@@ -413,23 +481,32 @@ export default function PaymentSumary(props) {
             </View>
           </View>
           {Platform.OS == "ios" ? (
+            <ApplePayButton type="plain" style="black" onPress={onApplePay} />
+          ) : (
             <TouchableOpacity
-              style={{ padding: 10, backgroundColor: "#cdcdcd" }}
+              style={{
+                padding: 10,
+                backgroundColor: "#cdcdcd",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
               onPress={() => {
-                onApplePay();
+                GooglePay();
               }}
             >
-              <Text style={{ color: "black" }}>Apple Pay</Text>
+              <Text style={{ color: "black" }}>Google Pay</Text>
             </TouchableOpacity>
-          ) : (
-            <MediaButton
-              disabled={checkIndex != -1 ? false : true}
-              txt={t("CONTINUE")}
-              style={{ backgroundColor: "rgb(228, 45, 72)", marginTop: hp(0) }}
-              simple
-              onPress={onNext}
-            />
           )}
+          <MediaButton
+            disabled={checkIndex != -1 ? false : true}
+            txt={t("CONTINUE")}
+            style={{
+              backgroundColor: "rgb(228, 45, 72)",
+              marginTop: hp(0),
+            }}
+            simple
+            onPress={onNext}
+          />
         </View>
         <View style={styles.centeredView}>
           <Modal
