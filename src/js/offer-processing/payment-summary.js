@@ -175,20 +175,50 @@ export default function PaymentSumary(props) {
 
     publishOffer();
   };
-  const applePayRequest = new PaymentRequest(
-    {
-      countryCode: "US", // Your country code
-      currencyCode: "USD", // Currency code for payment
-      supportedNetworks: ["visa", "mastercard", "amex"], // Supported card networks
-      merchantCapabilities: ["supports3DS"], // Merchant capabilities
-      total: {
-        label: "Your Company Name",
-        amount: "10.00", // Total amount
-      },
-      merchantIdentifier: "merchant.com.now",
-    },
-    []
-  );
+
+  // const googlePayRequest = new PaymentRequest(
+  //   {
+  //     supportedMethods: ["https://google.com/pay"], // Google Pay specific method
+  //     data: {
+  //       environment: "TEST", // Use "PRODUCTION" for live mode
+  //       apiVersion: 2,
+  //       apiVersionMinor: 0,
+  //       merchantInfo: {
+  //         merchantId: "merchant.com.no", // Your Google Pay Merchant ID
+  //         merchantName: "Now", // Display name
+  //       },
+  //       allowedPaymentMethods: [
+  //         {
+  //           type: "CARD",
+  //           parameters: {
+  //             allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+  //             allowedCardNetworks: ["MASTERCARD", "VISA"],
+  //           },
+  //           // tokenizationSpecification: {
+  //           //   type: "PAYMENT_GATEWAY",
+  //           //   parameters: {
+  //           //     gateway: "stripe", // Your payment gateway (e.g., stripe, braintree, etc.)
+  //           //     gatewayMerchantId: "merchant.com.now", // Payment gateway-specific merchant ID
+  //           //   },
+  //           // },
+  //         },
+  //       ],
+  //     },
+  //   },
+  //   {
+  //     total: {
+  //       label: "Your Company Name",
+  //       amount: "10.00", // Total amount
+  //       currency: "USD", // Currency code
+  //     },
+  //   },
+  //   {
+  //     requestPayerName: true,
+  //     requestPayerPhone: true,
+  //     requestPayerEmail: true,
+  //     requestShipping: true,
+  //   }
+  // );
 
   const onNext = () => {
     // onPaymentDone();
@@ -201,23 +231,50 @@ export default function PaymentSumary(props) {
     // }
   };
   const onApplePay = async () => {
+    const METHOD_DATA = [
+      {
+        supportedMethods: "https://apple.com/apple-pay", // Correct identifier
+        data: {
+          merchantIdentifier: "merchant.com.now", // Replace with your actual merchant identifier
+          supportedNetworks: ["visa", "mastercard", "amex"],
+          countryCode: "US",
+          currencyCode: "USD",
+        },
+      },
+    ];
+
+    const DETAILS = {
+      id: "basic-example",
+      displayItems: [
+        {
+          label: "Movie Ticket",
+          amount: { currency: "USD", value: "15.00" },
+        },
+      ],
+      total: {
+        label: "Merchant Name",
+        amount: { currency: "USD", value: "15.00" },
+      },
+    };
+
+    // Construct the PaymentRequest object
     try {
-      // Check if Apple Pay is available
-      const canMakePayments = await applePayRequest.canMakePayments();
-      if (!canMakePayments) {
-        alert("Apple Pay is not available on this device.");
-        return;
-      }
+      const applePayRequest = new PaymentRequest(METHOD_DATA, DETAILS);
 
-      // Show the Apple Pay payment sheet
-      const paymentResponse = await applePayRequest.show();
-      console.log("Payment successful:", paymentResponse);
-
-      // Complete the payment
-      paymentResponse.complete("success");
+      // Show the payment UI (example)
+      applePayRequest
+        .show()
+        .then((paymentResponse) => {
+          // Handle payment success
+          console.log("Payment successful:", paymentResponse);
+          paymentResponse.complete("success");
+        })
+        .catch((error) => {
+          // Handle payment errors
+          console.error("Payment request failed:", error);
+        });
     } catch (error) {
-      applePayRequest.abort();
-      console.error("Payment failed:", error);
+      console.error("Failed to construct PaymentRequest:", error.message);
     }
   };
   const publishOffer = async () => {
