@@ -482,21 +482,21 @@ export default function PaymentSumary(props) {
           </View>
           {Platform.OS == "ios" ? (
             <ApplePayButton type="plain" style="black" onPress={onApplePay} />
-          ) : (
-            <TouchableOpacity
-              style={{
-                padding: 10,
-                backgroundColor: "#cdcdcd",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              onPress={() => {
-                GooglePay();
-              }}
-            >
-              <Text style={{ color: "black" }}>Google Pay</Text>
-            </TouchableOpacity>
-          )}
+          ) : null
+          // <TouchableOpacity
+          //   style={{
+          //     padding: 10,
+          //     backgroundColor: "#cdcdcd",
+          //     justifyContent: "center",
+          //     alignItems: "center",
+          //   }}
+          //   onPress={() => {
+          //     GooglePay();
+          //   }}
+          // >
+          //   <Text style={{ color: "black" }}>Google Pay</Text>
+          // </TouchableOpacity>
+          }
           <MediaButton
             disabled={checkIndex != -1 ? false : true}
             txt={t("CONTINUE")}
