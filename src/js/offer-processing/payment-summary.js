@@ -233,7 +233,7 @@ export default function PaymentSumary(props) {
   const onApplePay = async () => {
     const METHOD_DATA = [
       {
-        supportedMethods: "https://apple.com/apple-pay", // Correct identifier
+        supportedMethods: ['apple-pay'], // Correct identifier
         data: {
           merchantIdentifier: "merchant.com.now", // Replace with your actual merchant identifier
           supportedNetworks: ["visa", "mastercard", "amex"],
@@ -259,7 +259,7 @@ export default function PaymentSumary(props) {
 
     // Construct the PaymentRequest object
     try {
-      const applePayRequest = new PaymentRequest(METHOD_DATA, DETAILS);
+      const applePayRequest = new PaymentRequest(METHOD_DATA, DETAILS,{});
 
       // Show the payment UI (example)
       applePayRequest
