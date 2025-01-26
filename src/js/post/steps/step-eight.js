@@ -116,7 +116,7 @@ export default function StepEight(props) {
 
       return response.data.offers[0];
     } else {
-      console.log(response.status);
+      console.log(response.status, response,'CHECK IT');
       Alert.alert(response.error);
       return null;
     }
