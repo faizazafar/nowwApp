@@ -36,11 +36,14 @@ class Paypal extends Component {
       offset: new Animated.Value(Dimensions.get('window').height),
       height: Dimensions.get('window').height,
       showLoader: true,
+      approval_url: '',
     };
   }
 
   _onNavigationStateChange = async webViewState => {
     //console.log('test32 webViewState url ', JSON.stringify(webViewState.url));
+    console.log('test32 webViewState url ', webViewState);
+    return
     if (webViewState.url.includes('https://example.com/')) {
       this.closeModal();
 
@@ -76,20 +79,53 @@ class Paypal extends Component {
     }
   }
 
+  componentDidMount(){
+    const myHeaders = new Headers();
+    // myHeaders.append("Cookie", "PHPSESSID=dl4h9e1cgl22l7iddo9gf0ln21");
+    
+    const formdata = new FormData();
+    formdata.append("amount", this.props.amount);
+    formdata.append("currency", "USD");
+    formdata.append("order_no", "12345");
+    formdata.append("desc", "Des about the order and payment");
+    
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow"
+    };
+    
+    fetch("https://clients.devaj.technology/sandbox/now-app/index.php?r=api/payPalPayment&key=lkash2987kjb2h99j", requestOptions)
+      .then((response) => response.json())
+      .then((result) =>{
+        this.setState({approval_url: result?.approval_url})
+        //  console.log(result?.approval_url,'ssssss')
+        })
+      .catch((error) => console.error(error));
+  }
+
   body() {
     const {isOpen} = this.state;
     const {amount} = this.props;
 
-    let url =
-      'https://clients.devaj.technology/sandbox/now-app/paypal-sandbox.html?val=';
 
+    console.log(this.state.approval_url,'this.state.approval_url');
+    
+    let url =
+      // 'https://clients.devaj.technology/sandbox/now-app/paypal-sandbox.html?val=';
+
+      'https://clients.devaj.technology/sandbox/now-app/index.php?r=api/payPalPayment&key=lkash2987kjb2h99j';
+
+      // 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=EC-34H85788R5565620W';
+      
     if (isOpen) {
       return (
         <View style={{flex: 1}}>
           <WebView
             style={{paddingTop: 20}}
             source={{
-              uri: url + amount,
+              uri: this.state.approval_url,
             }}
             onNavigationStateChange={this._onNavigationStateChange}
             javaScriptEnabled={true}
